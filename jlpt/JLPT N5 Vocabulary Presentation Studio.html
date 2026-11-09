@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JLPT N5 Complete Vocabulary Presentation — Jp Launch Style</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            jp: ['"Noto Sans JP"', 'sans-serif'],
+          },
+          colors: {
+            vermilion: {
+              50: '#fff3f1',
+              100: '#ffe4df',
+              500: '#e63946',
+              600: '#d62828',
+              700: '#b51d1d',
+            },
+            indigojp: {
+              50: '#f0f4f8',
+              100: '#d9e2ec',
+              600: '#1d3557',
+              800: '#102a43',
+              900: '#0a192f',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom presentation styling */
+    body {
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    .kanji-stage {
+      font-size: clamp(3.2rem, 8vw, 6.75rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+    }
+    .kana-stage {
+      font-size: clamp(1.35rem, 3vw, 2.35rem);
+    }
+    .meaning-stage {
+      font-size: clamp(1.5rem, 3.4vw, 2.75rem);
+    }
+    /* Subtle Japanese paper texture feel in light mode */
+    .paper-bg {
+      background-color: #faf8f5;
+      background-image: radial-gradient(#e5e0d8 0.75px, transparent 0.75px);
+      background-size: 24px 24px;
+    }
+    .dark .paper-bg {
+      background-color: #0b0f19;
+      background-image: radial-gradient(#1e293b 0.75px, transparent 0.75px);
+      background-size: 24px 24px;
+    }
+    /* Progress bar smooth transition */
+    .progress-fill {
+      transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* Custom Scrollbar for Drawer */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.4);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(156, 163, 175, 0.7);
+    }
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.06); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .speaking-indicator {
+      animation: pulseRing 1.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="h-full overflow-hidden paper-bg text-slate-900 dark:text-slate-100 transition-colors duration-300 flex flex-col justify-between">
+
+  <!-- TOP PROGRESS BAR (Video Timeline Feel) -->
+  <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 relative z-30 cursor-pointer group" id="timelineBar" title="Click to jump across vocabulary list">
+    <div id="timelineFill" class="h-full bg-vermilion-500 progress-fill w-0 relative">
+      <div class="absolute right-0 -top-1 w-3.5 h-3.5 rounded-full bg-vermilion-600 shadow-md scale-0 group-hover:scale-100 transition-transform"></div>
+    </div>
+  </div>
+
+  <!-- TOP NAVIGATION & PRESENTATION HEADER -->
+  <header class="w-full px-4 sm:px-8 py-3 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-3 z-20">
+    <!-- Left: Brand + Current Gojuon Row Badge + Word Counter -->
+    <div class="flex items-center gap-3 flex-wrap">
+      <div class="flex items-center gap-2">
+        <span class="w-8 h-8 rounded-lg bg-vermilion-500 text-white font-jp font-black flex items-center justify-center text-lg shadow-sm">N5</span>
+        <div class="hidden sm:block">
+          <h1 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Jp Launch Style</h1>
+          <p class="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">JLPT N5 Complete Vocab</p>
+        </div>
+      </div>
+
+      <div class="h-5 w-[1px] bg-slate-200 dark:bg-slate-700 hidden sm:block"></div>
+
+      <!-- Gojuon Section Selector -->
+      <div class="relative">
+        <select id="categorySelect" aria-label="Filter by Gojūon row or category" class="appearance-none bg-indigojp-50 dark:bg-slate-800 text-indigojp-800 dark:text-amber-300 font-jp font-bold text-sm px-3.5 py-1.5 pr-8 rounded-full border border-slate-200 dark:border-slate-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-vermilion-500">
+          <option value="ALL">All Sections (Complete)</option>
+        </select>
+        <svg class="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </div>
+
+      <!-- Word Index Counter Badge -->
+      <div class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/90 px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 border border-slate-200/70 dark:border-slate-700">
+        <span>Word</span>
+        <span id="currentIndexDisplay" class="font-bold text-vermilion-600 dark:text-vermilion-500">1</span>
+        <span>of</span>
+        <span id="totalWordsDisplay" class="font-bold">800</span>
+      </div>
+    </div>
+
+    <!-- Right: Search, Visibility Toggles, All Words Drawer, Theme & Fullscreen -->
+    <div class="flex items-center gap-2 flex-wrap">
+      <!-- Quick Search -->
+      <div class="relative hidden md:block w-48 lg:w-60">
+        <input id="searchInput" type="text" placeholder="Search Kanji, Kana, English..." class="w-full pl-8 pr-7 py-1.5 text-sm rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-vermilion-500 transition-all" />
+        <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <button id="clearSearchBtn" class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold">✕</button>
+      </div>
+
+      <!-- Self-Test Visibility Toggles -->
+      <div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-semibold">
+        <button id="toggleKanaBtn" class="px-2.5 py-1 rounded-full bg-white dark:bg-slate-700 shadow-sm text-slate-800 dark:text-slate-100 transition" title="Toggle Furigana / Hiragana reading">かな</button>
+        <button id="toggleRomajiBtn" class="px-2.5 py-1 rounded-full bg-white dark:bg-slate-700 shadow-sm text-slate-800 dark:text-slate-100 transition ml-0.5" title="Toggle Romaji">ABC</button>
+        <button id="toggleEnglishBtn" class="px-2.5 py-1 rounded-full bg-white dark:bg-slate-700 shadow-sm text-slate-800 dark:text-slate-100 transition ml-0.5" title="Toggle English meaning (Quiz Mode - Shortcut: H)">ENG</button>
+      </div>
+
+      <!-- Open Complete Word List Grid Drawer -->
+      <button id="openDrawerBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition" title="Browse Full Vocabulary Grid">
+        <svg class="w-4 h-4 text-vermilion-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <span>Index</span>
+      </button>
+
+      <!-- Theme Toggle -->
+      <button id="themeToggleBtn" class="p-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition" title="Switch Light / Cinema Dark Mode">
+        <svg id="sunIcon" class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg id="moonIcon" class="w-4 h-4 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      </button>
+
+      <!-- Fullscreen Toggle (F) -->
+      <button id="fullscreenBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-indigojp-600 hover:bg-indigojp-800 text-white shadow-sm transition" title="Toggle Fullscreen Presentation (Shortcut: F)">
+        <svg id="fsExpandIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+        <span class="hidden sm:inline" id="fsBtnText">Fullscreen</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CENTER PRESENTATION STAGE (Mimics Jp Launch Video Slide Frame) -->
+  <main class="flex-1 flex flex-col items-center justify-center px-4 sm:px-10 py-4 relative overflow-hidden">
+    <!-- Subtle Decorative Background Watermark Character -->
+    <div id="watermarkKana" class="pointer-events-none select-none font-jp font-black text-[18rem] sm:text-[26rem] leading-none text-slate-900/[0.025] dark:text-white/[0.02] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
+      あ
+    </div>
+
+    <!-- Main Video-Style Presentation Card -->
+    <div id="presentationCard" class="w-full max-w-4xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-xl dark:shadow-2xl border border-slate-200/90 dark:border-slate-800 px-6 sm:px-14 py-8 sm:py-12 relative z-10 flex flex-col items-center text-center transition-all duration-200">
+      
+      <!-- Card Top Meta Row: Gojuon Row Tag, Word Number, POS Pill, Star/Mastered Button -->
+      <div class="w-full flex items-center justify-between gap-2 mb-4 sm:mb-6">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span id="cardSectionBadge" class="px-3 py-1 rounded-full text-xs sm:text-sm font-jp font-bold bg-vermilion-50 text-vermilion-600 dark:bg-vermilion-500/15 dark:text-vermilion-400 border border-vermilion-200/60 dark:border-vermilion-500/30">
+            あ (A-row)
+          </span>
+          <span id="cardPosBadge" class="px-3 py-1 rounded-full text-xs sm:text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+            Verb
+          </span>
+          <span id="audioStatusBadge" class="hidden items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 speaking-indicator"></span>
+            <span id="audioStatusText">Speaking...</span>
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span id="cardNumberTag" class="text-xs sm:text-sm font-mono font-bold text-slate-400 dark:text-slate-500">#001</span>
+          <button id="masterWordBtn" class="p-2 rounded-full border border-slate-200 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-slate-800 transition group" title="Mark as Mastered / Starred (Shortcut: M)">
+            <svg id="starIcon" class="w-5 h-5 text-slate-400 group-hover:text-amber-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Furigana / Kana + Romaji Pronunciation Row -->
+      <div class="min-h-[2.75rem] flex flex-wrap items-center justify-center gap-3 mb-1">
+        <span id="cardKana" class="kana-stage font-jp font-bold text-vermilion-600 dark:text-amber-400 tracking-wide transition-opacity duration-200">
+          あう
+        </span>
+        <span id="cardRomaji" class="px-3 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-sm sm:text-base font-semibold tracking-wider uppercase transition-opacity duration-200">
+          au
+        </span>
+      </div>
+
+      <!-- MAIN CENTER KANJI / VOCABULARY WORD -->
+      <div class="my-2 sm:my-4 flex items-center justify-center gap-3 cursor-pointer group" id="kanjiClickArea" title="Click to hear Japanese pronunciation">
+        <h2 id="cardKanji" class="kanji-stage font-jp font-black text-slate-900 dark:text-white tracking-tight select-text group-hover:text-indigojp-600 dark:group-hover:text-amber-300 transition-colors">
+          会う
+        </h2>
+        <button class="opacity-60 group-hover:opacity-100 p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-vermilion-500 hover:text-white transition shadow-sm" aria-label="Play Japanese Audio">
+          <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+        </button>
+      </div>
+
+      <!-- Divider Line -->
+      <div class="w-24 h-1 rounded-full bg-vermilion-500/80 my-3 sm:my-5"></div>
+
+      <!-- English Meaning Display -->
+      <div id="meaningContainer" class="min-h-[3.5rem] flex flex-col items-center justify-center transition-opacity duration-200">
+        <p id="cardMeaning" class="meaning-stage font-extrabold text-indigojp-800 dark:text-slate-100 tracking-tight">
+          to meet
+        </p>
+      </div>
+
+      <!-- Video-Style Example / Usage Note Pill -->
+      <div id="exampleContainer" class="mt-5 sm:mt-7 w-full max-w-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/80 rounded-2xl px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-left">
+        <div class="flex items-center gap-2.5">
+          <span class="px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider rounded bg-indigojp-600 text-white shrink-0">Example / Note</span>
+          <div>
+            <p id="cardExampleJp" class="font-jp font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100">友だちに会う (tomodachi ni au)</p>
+            <p id="cardExampleEn" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">to meet a friend</p>
+          </div>
+        </div>
+        <button id="speakExampleBtn" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-slate-700 hover:bg-vermilion-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 flex items-center gap-1.5 shrink-0 transition" title="Speak Japanese Example">
+          <svg class="w-3.5 h-3.5 text-vermilion-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+          <span>Hear Phrase</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Side Floating Prev / Next Chevrons for Large Screens -->
+    <button id="sidePrevBtn" aria-label="Previous Word" class="hidden xl:flex items-center justify-center w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 hover:bg-vermilion-500 hover:text-white dark:hover:bg-vermilion-500 border border-slate-200 dark:border-slate-800 shadow-lg absolute left-6 top-1/2 -translate-y-1/2 transition">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <button id="sideNextBtn" aria-label="Next Word" class="hidden xl:flex items-center justify-center w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 hover:bg-vermilion-500 hover:text-white dark:hover:bg-vermilion-500 border border-slate-200 dark:border-slate-800 shadow-lg absolute right-6 top-1/2 -translate-y-1/2 transition">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </main>
+
+  <!-- BOTTOM PRESENTATION & AUDIO DECK BAR -->
+  <footer class="w-full px-4 sm:px-8 py-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200/80 dark:border-slate-800/80 z-20">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Left: Auto-Play Presentation Mode Controls -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button id="autoPlayBtn" class="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full font-bold text-sm bg-vermilion-500 hover:bg-vermilion-600 text-white shadow-md hover:shadow-lg transition">
+          <svg id="playIcon" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+          <svg id="pauseIcon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+          <span id="autoPlayText">Auto-Play Video Mode</span>
+        </button>
+
+        <!-- Speak English + Japanese 2x Pattern Toggle (Just like Jp Launch video) -->
+        <label class="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 cursor-pointer bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-full border border-slate-200 dark:border-slate-700" title="Just like the video: Speak English once, pause, then speak Japanese twice">
+          <input id="speakEnglishToggle" type="checkbox" checked class="accent-vermilion-500 rounded cursor-pointer" />
+          <span>EN + JP×2 Audio</span>
+        </label>
+
+        <!-- Speed Selector -->
+        <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-full px-2.5 py-1.5 border border-slate-200 dark:border-slate-700 text-xs font-bold">
+          <span class="text-slate-400 mr-1 hidden md:inline">Speed:</span>
+          <select id="speedSelect" aria-label="Speech and presentation speed" class="bg-transparent text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
+            <option value="0.8">0.8x</option>
+            <option value="1" selected>1.0x</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Center: Prev / Repeat Audio / Next / Shuffle -->
+      <div class="flex items-center gap-2">
+        <button id="prevBtn" class="px-3.5 py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs sm:text-sm flex items-center gap-1 transition" title="Previous Word (←)">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          <span class="hidden sm:inline">Prev</span>
+        </button>
+
+        <button id="speakNowBtn" class="px-4 py-2 rounded-full bg-indigojp-50 hover:bg-indigojp-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-indigojp-800 dark:text-amber-300 font-bold text-xs sm:text-sm flex items-center gap-1.5 border border-indigojp-100 dark:border-slate-700 transition" title="Speak Japanese Now (Shortcut: R)">
+          <svg class="w-4 h-4 text-vermilion-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          <span>Speak (R)</span>
+        </button>
+
+        <button id="nextBtn" class="px-3.5 py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs sm:text-sm flex items-center gap-1 transition" title="Next Word (→)">
+          <span class="hidden sm:inline">Next</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+
+        <button id="shuffleBtn" class="p-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition" title="Shuffle Order">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </button>
+      </div>
+
+      <!-- Right: Subtle Keyboard Shortcuts Legend -->
+      <div class="hidden xl:flex items-center gap-3 text-[11px] font-medium text-slate-400 dark:text-slate-500">
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-mono">Space</kbd> Play/Pause</span>
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-mono">←/→</kbd> Navigate</span>
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-mono">R</kbd> Audio</span>
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-mono">H</kbd> Quiz Hide</span>
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-mono">F</kbd> Fullscreen</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- COMPLETE VOCABULARY INDEX DRAWER / MODAL -->
+  <div id="vocabDrawer" class="fixed inset-0 z-50 hidden">
+    <!-- Backdrop -->
+    <div id="drawerBackdrop" class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"></div>
+    
+    <!-- Panel -->
+    <div class="absolute right-0 top-0 bottom-0 w-full max-w-3xl bg-white dark:bg-slate-900 shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col">
+      <!-- Drawer Header -->
+      <div class="p-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>Complete JLPT N5 Vocabulary Index</span>
+            <span id="drawerCountBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-vermilion-100 dark:bg-vermilion-500/20 text-vermilion-600 dark:text-vermilion-400 font-bold"></span>
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Organized in exact Gojūon (あ → わ) order + Counters & Greetings from the Jp Launch video</p>
+        </div>
+        <button id="closeDrawerBtn" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Drawer Filter & Custom Word Bar -->
+      <div class="px-4 sm:px-6 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2 flex-1 min-w-[200px]">
+          <input id="drawerSearchInput" type="text" placeholder="Filter words in index..." class="w-full px-3.5 py-1.5 text-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-vermilion-500" />
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="filterStarredBtn" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-amber-400 flex items-center gap-1 transition">
+            <span>★ Mastered Only</span>
+            <span id="starredCountBadge" class="px-1.5 py-0.2 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">0</span>
+          </button>
+          <button id="toggleAddWordFormBtn" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-vermilion-500 hover:bg-vermilion-600 text-white transition">
+            + Add Custom Word
+          </button>
+        </div>
+      </div>
+
+      <!-- Collapsible Add Custom Word Form -->
+      <form id="addWordForm" class="hidden px-4 sm:px-6 py-3 bg-indigojp-50/70 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 grid grid-cols-2 sm:grid-cols-5 gap-2">
+        <input id="customKanji" type="text" required placeholder="Kanji/Word (e.g. 勉強)" class="px-2.5 py-1.5 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700" />
+        <input id="customKana" type="text" required placeholder="Kana (e.g. べんきょう)" class="px-2.5 py-1.5 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700" />
+        <input id="customRomaji" type="text" required placeholder="Romaji (benkyou)" class="px-2.5 py-1.5 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700" />
+        <input id="customMeaning" type="text" required placeholder="English Meaning" class="px-2.5 py-1.5 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700" />
+        <button type="submit" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigojp-600 text-white hover:bg-indigojp-800">Save Word</button>
+      </form>
+
+      <!-- Drawer Word Grid -->
+      <div id="drawerGrid" class="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-2.5 content-start">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*************************************************************************
+     * COMPREHENSIVE JLPT N5 VOCABULARY DATASET (GOJŪON ORDER + EXPRESSIONS)
+     * Modeled directly after "Jp Launch - Learn All 800 JLPT N5 Vocabulary"
+     * Format: [section, kanji, kana, romaji, meaning, pos, exampleJp, exampleEn]
+     *************************************************************************/
+    const RAW_VOCAB_DATA = [
+      // ===================== あ (A-ROW) =====================
+      ["あ (A-row)", "会う", "あう", "au", "to meet", "Verb", "友だちに会う (tomodachi ni au)", "to meet a friend"],
+      ["あ (A-row)", "青", "あお", "ao", "blue", "Noun", "空の青 (sora no ao)", "the blue of the sky"],
+      ["あ (A-row)", "青い", "あおい", "aoi", "blue", "i-Adjective", "青い空 (aoi sora)", "blue sky"],
+      ["あ (A-row)", "赤", "あか", "aka", "red", "Noun", "赤と白 (aka to shiro)", "red and white"],
+      ["あ (A-row)", "赤い", "あかい", "akai", "red", "i-Adjective", "赤いりんご (akai ringo)", "red apple"],
+      ["あ (A-row)", "明かり", "あかり", "akari", "light, illumination", "Noun", "明かりをつける (akari o tsukeru)", "to turn on the light"],
+      ["あ (A-row)", "明るい", "あかるい", "akarui", "bright; cheerful", "i-Adjective", "明るい部屋 (akarui heya)", "bright room"],
+      ["あ (A-row)", "秋", "あき", "aki", "autumn, fall", "Noun", "日本の秋 (nihon no aki)", "autumn in Japan"],
+      ["あ (A-row)", "開く", "あく", "aku", "to open; to become vacant", "Verb", "ドアが開く (doa ga aku)", "the door opens"],
+      ["あ (A-row)", "開ける", "あける", "akeru", "to open (something)", "Verb", "窓を開ける (mado o akeru)", "to open the window"],
+      ["あ (A-row)", "あげる", "あげる", "ageru", "to give", "Verb", "プレゼントをあげる (purezento o ageru)", "to give a present"],
+      ["あ (A-row)", "朝", "あさ", "asa", "morning", "Noun", "毎朝 (maiasa)", "every morning"],
+      ["あ (A-row)", "朝ご飯", "あさごはん", "asagohan", "breakfast", "Noun", "朝ご飯を食べる (asagohan o taberu)", "to eat breakfast"],
+      ["あ (A-row)", "明後日", "あさって", "asatte", "day after tomorrow", "Noun", "明後日会いましょう (asatte aimashou)", "let's meet the day after tomorrow"],
+      ["あ (A-row)", "足", "あし", "ashi", "leg, foot", "Noun", "足が速い (ashi ga hayai)", "fast runner / quick-footed"],
+      ["あ (A-row)", "明日", "あした", "ashita", "tomorrow", "Noun", "また明日 (mata ashita)", "see you tomorrow"],
+      ["あ (A-row)", "あそこ", "あそこ", "asoko", "over there", "Pronoun", "あそこに駅がある (asoko ni eki ga aru)", "the station is over there"],
+      ["あ (A-row)", "遊ぶ", "あそぶ", "asobu", "to play; to hang out", "Verb", "公園で遊ぶ (kouen de asobu)", "to play in the park"],
+      ["あ (A-row)", "暖かい", "あたたかい", "atatakai", "warm (weather/air)", "i-Adjective", "暖かい春の日 (atatakai haru no hi)", "a warm spring day"],
+      ["あ (A-row)", "頭", "あたま", "atama", "head; mind", "Noun", "頭がいい (atama ga ii)", "smart / clever"],
+      ["あ (A-row)", "新しい", "あたらしい", "atarashii", "new", "i-Adjective", "新しい車 (atarashii kuruma)", "new car"],
+      ["あ (A-row)", "あちら", "あちら", "achira", "over there (polite)", "Pronoun", "あちらへどうぞ (achira e douzo)", "this way, please"],
+      ["あ (A-row)", "暑い", "あつい", "atsui", "hot (weather)", "i-Adjective", "今日は暑いですね (kyou wa atsui desu ne)", "it is hot today, isn't it?"],
+      ["あ (A-row)", "熱い", "あつい", "atsui", "hot (to the touch)", "i-Adjective", "熱いお茶 (atsui ocha)", "hot tea"],
+      ["あ (A-row)", "厚い", "あつい", "atsui", "thick", "i-Adjective", "厚い本 (atsui hon)", "a thick book"],
+      ["あ (A-row)", "あと", "あと", "ato", "afterwards, later; remainder", "Noun", "あとで行きます (ato de ikimasu)", "I will go later"],
+      ["あ (A-row)", "あなた", "あなた", "anata", "you", "Pronoun", "あなたの本 (anata no hon)", "your book"],
+      ["あ (A-row)", "兄", "あに", "ani", "(my) older brother", "Noun", "兄は大学生です (ani wa daigakusei desu)", "my older brother is a college student"],
+      ["あ (A-row)", "姉", "あね", "ane", "(my) older sister", "Noun", "姉は東京にいます (ane wa toukyou ni imasu)", "my older sister is in Tokyo"],
+      ["あ (A-row)", "あの", "あの", "ano", "that (over there)", "Pre-noun", "あの人 (ano hito)", "that person"],
+      ["あ (A-row)", "アパート", "アパート", "apaato", "apartment", "Noun", "新しいアパート (atarashii apaato)", "new apartment"],
+      ["あ (A-row)", "浴びる", "あびる", "abiru", "to take a shower", "Verb", "シャワーを浴びる (shawaa o abiru)", "to take a shower"],
+      ["あ (A-row)", "危ない", "あぶない", "abunai", "dangerous", "i-Adjective", "危ないですから気をつけて (abunai desu kara ki o tsukete)", "it's dangerous, so be careful"],
+      ["あ (A-row)", "甘い", "あまい", "amai", "sweet", "i-Adjective", "甘いケーキ (amai keeki)", "sweet cake"],
+      ["あ (A-row)", "あまり", "あまり", "amari", "not very, not much (with neg.)", "Adverb", "あまり高くない (amari takakunai)", "not very expensive"],
+      ["あ (A-row)", "雨", "あめ", "ame", "rain", "Noun", "雨が降る (ame ga furu)", "it rains"],
+      ["あ (A-row)", "飴", "あめ", "ame", "candy, sweets", "Noun", "甘い飴 (amai ame)", "sweet candy"],
+      ["あ (A-row)", "アメリカ", "アメリカ", "amerika", "United States of America", "Noun", "アメリカから来ました (amerika kara kimashita)", "I came from the USA"],
+      ["あ (A-row)", "洗う", "あらう", "arau", "to wash", "Verb", "手を洗う (te o arau)", "to wash one's hands"],
+      ["あ (A-row)", "ある", "ある", "aru", "to be, to exist, to have (inanimate)", "Verb", "机の上に本がある (tsukue no ue ni hon ga aru)", "there is a book on the desk"],
+      ["あ (A-row)", "歩く", "あるく", "aruku", "to walk", "Verb", "駅まで歩く (eki made aruku)", "to walk to the station"],
+      ["あ (A-row)", "あれ", "あれ", "are", "that one (over there)", "Pronoun", "あれは何ですか (are wa nan desu ka)", "what is that over there?"],
+
+      // ===================== い (I-ROW) =====================
+      ["い (I-row)", "いい / よい", "いい / よい", "ii / yoi", "good, fine", "i-Adjective", "いい天気 (ii tenki)", "nice weather"],
+      ["い (I-row)", "いいえ", "いいえ", "iie", "no; not at all", "Expression", "いいえ、違います (iie, chigaimasu)", "no, that's wrong"],
+      ["い (I-row)", "言う", "いう", "iu", "to say, to tell", "Verb", "日本語で何と言いますか (nihongo de nan to iimasu ka)", "how do you say it in Japanese?"],
+      ["い (I-row)", "家", "いえ", "ie", "house, home", "Noun", "家に帰る (ie ni kaeru)", "to return home"],
+      ["い (I-row)", "いかが", "いかが", "ikaga", "how, in what way (polite)", "Adverb", "お茶はいかがですか (ocha wa ikaga desu ka)", "would you like some tea?"],
+      ["い (I-row)", "行く", "いく", "iku", "to go", "Verb", "学校へ行く (gakkou e iku)", "to go to school"],
+      ["い (I-row)", "いくつ", "いくつ", "ikutsu", "how many; how old", "Noun", "みかんをいくつ買いますか (mikan o ikutsu kaimasu ka)", "how many mandarins will you buy?"],
+      ["い (I-row)", "いくら", "いくら", "ikura", "how much (price)", "Noun", "これはいくらですか (kore wa ikura desu ka)", "how much is this?"],
+      ["い (I-row)", "池", "いけ", "ike", "pond", "Noun", "公園の池 (kouen no ike)", "the pond in the park"],
+      ["い (I-row)", "医者", "いしゃ", "isha", "doctor, physician", "Noun", "医者に行く (isha ni iku)", "to go see a doctor"],
+      ["い (I-row)", "椅子", "いす", "isu", "chair", "Noun", "椅子に座る (isu ni suwaru)", "to sit on a chair"],
+      ["い (I-row)", "忙しい", "いそがしい", "isogashii", "busy", "i-Adjective", "今週は忙しい (konshuu wa isogashii)", "I am busy this week"],
+      ["い (I-row)", "痛い", "いたい", "itai", "painful, sore, aching", "i-Adjective", "頭が痛い (atama ga itai)", "I have a headache"],
+      ["い (I-row)", "一", "いち", "ichi", "one", "Noun", "一から始める (ichi kara hajimeru)", "to start from one"],
+      ["い (I-row)", "一日", "いちにち", "ichinichi", "one day; all day", "Noun", "一日中 (ichinichijuu)", "all day long"],
+      ["い (I-row)", "一番", "いちばん", "ichiban", "number one; best; most", "Adverb", "一番好きな食べ物 (ichiban sukina tabemono)", "favorite food"],
+      ["い (I-row)", "いつ", "いつ", "itsu", "when", "Pronoun", "誕生日はいつですか (tanjoubi wa itsu desu ka)", "when is your birthday?"],
+      ["い (I-row)", "五日", "いつか", "itsuka", "fifth day of the month; 5 days", "Noun", "五月五日 (gogatsu itsuka)", "May 5th"],
+      ["い (I-row)", "一緒", "いっしょ", "issho", "together", "Noun", "一緒に行きましょう (issho ni ikimashou)", "let's go together"],
+      ["い (I-row)", "五つ", "いつつ", "itsutsu", "five (things)", "Noun", "りんごを五つください (ringo o itsutsu kudasai)", "five apples, please"],
+      ["い (I-row)", "いつも", "いつも", "itsumo", "always, usually", "Adverb", "いつもありがとう (itsumo arigatou)", "thank you as always"],
+      ["い (I-row)", "犬", "いぬ", "inu", "dog", "Noun", "犬の散歩 (inu no sanpo)", "walking the dog"],
+      ["い (I-row)", "今", "いま", "ima", "now", "Noun", "今、何時ですか (ima, nanji desu ka)", "what time is it now?"],
+      ["い (I-row)", "意味", "いみ", "imi", "meaning", "Noun", "この言葉の意味 (kono kotoba no imi)", "the meaning of this word"],
+      ["い (I-row)", "妹", "いもうと", "imouto", "(my) younger sister", "Noun", "妹は高校生です (imouto wa koukousei desu)", "my younger sister is a high school student"],
+      ["い (I-row)", "嫌", "いや", "iya", "unpleasant, disagreeable, disliked", "na-Adjective", "嫌な天気 (iya na tenki)", "nasty weather"],
+      ["い (I-row)", "入口", "いりぐち", "iriguchi", "entrance", "Noun", "駅の入口 (eki no iriguchi)", "station entrance"],
+      ["い (I-row)", "いる", "いる", "iru", "to be, to exist (animate)", "Verb", "部屋に猫がいる (heya ni neko ga iru)", "there is a cat in the room"],
+      ["い (I-row)", "要る", "いる", "iru", "to need, to require", "Verb", "ビザが要る (biza ga iru)", "to need a visa"],
+      ["い (I-row)", "入れる", "いれる", "ireru", "to put in, to insert; to make tea/coffee", "Verb", "かばんに入れる (kaban ni ireru)", "to put into a bag"],
+      ["い (I-row)", "色", "いろ", "iro", "color", "Noun", "好きな色 (sukina iro)", "favorite color"],
+      ["い (I-row)", "いろいろ", "いろいろ", "iroiro", "various", "na-Adjective", "いろいろな国 (iroiro na kuni)", "various countries"],
+
+      // ===================== う (U-ROW) =====================
+      ["う (U-row)", "上", "うえ", "ue", "top, above, on", "Noun", "机の上 (tsukue no ue)", "on the desk"],
+      ["う (U-row)", "後ろ", "うしろ", "ushiro", "back, behind, rear", "Noun", "ビルの後ろ (biru no ushiro)", "behind the building"],
+      ["う (U-row)", "薄い", "うすい", "usui", "thin; weak/light (taste/color)", "i-Adjective", "薄い本 (usui hon)", "thin book"],
+      ["う (U-row)", "歌", "うた", "uta", "song", "Noun", "日本の歌 (nihon no uta)", "Japanese song"],
+      ["う (U-row)", "歌う", "うたう", "utau", "to sing", "Verb", "歌を歌う (uta o utau)", "to sing a song"],
+      ["う (U-row)", "うち", "うち", "uchi", "home, house; my place", "Noun", "うちに帰る (uchi ni kaeru)", "to go back home"],
+      ["う (U-row)", "生まれる", "うまれる", "umareru", "to be born", "Verb", "東京で生まれる (toukyou de umareru)", "to be born in Tokyo"],
+      ["う (U-row)", "海", "うみ", "umi", "sea, ocean, beach", "Noun", "海で泳ぐ (umi de oyogu)", "to swim in the sea"],
+      ["う (U-row)", "売る", "うる", "uru", "to sell", "Verb", "切符を売る (kippu o uru)", "to sell tickets"],
+      ["う (U-row)", "うるさい", "うるさい", "urusai", "noisy, loud; annoying", "i-Adjective", "外がうるさい (soto ga urusai)", "it's noisy outside"],
+      ["う (U-row)", "上着", "うわぎ", "uwagi", "coat, jacket, outer garment", "Noun", "上着を着る (uwagi o kiru)", "to put on a jacket"],
+
+      // ===================== え (E-ROW) =====================
+      ["え (E-row)", "絵", "え", "e", "picture, painting, drawing", "Noun", "絵を描く (e o kaku)", "to draw a picture"],
+      ["え (E-row)", "映画", "えいが", "eiga", "movie, film", "Noun", "映画を見る (eiga o miru)", "to watch a movie"],
+      ["え (E-row)", "映画館", "えいがかん", "eigakan", "movie theater, cinema", "Noun", "映画館へ行く (eigakan e iku)", "to go to the movie theater"],
+      ["え (E-row)", "英語", "えいご", "eigo", "English language", "Noun", "英語を話す (eigo o hanasu)", "to speak English"],
+      ["え (E-row)", "ええ", "ええ", "ee", "yes (conversational)", "Expression", "ええ、そうです (ee, sou desu)", "yes, that's right"],
+      ["え (E-row)", "駅", "えき", "eki", "train station", "Noun", "駅の近く (eki no chikaku)", "near the station"],
+      ["え (E-row)", "エレベーター", "エレベーター", "erebeetaa", "elevator", "Noun", "エレベーターに乗る (erebeetaa ni noru)", "to take the elevator"],
+      ["え (E-row)", "円", "えん", "en", "Yen (Japanese currency); circle", "Noun", "百円 (hyaku-en)", "100 yen"],
+      ["え (E-row)", "鉛筆", "えんぴつ", "enpitsu", "pencil", "Noun", "鉛筆で書く (enpitsu de kaku)", "to write with a pencil"],
+
+      // ===================== お (O-ROW) =====================
+      ["お (O-row)", "お姉さん", "おねえさん", "oneesan", "older sister (polite)", "Noun", "お姉さんはお元気ですか (oneesan wa ogenki desu ka)", "how is your older sister?"],
+      ["お (O-row)", "おいしい", "おいしい", "oishii", "delicious, tasty", "i-Adjective", "おいしい料理 (oishii ryouri)", "delicious food"],
+      ["お (O-row)", "大きい", "おおきい", "ookii", "big, large", "i-Adjective", "大きい犬 (ookii inu)", "big dog"],
+      ["お (O-row)", "大きな", "おおきな", "ookina", "big, large (pre-noun)", "Pre-noun", "大きな木 (ookina ki)", "a big tree"],
+      ["お (O-row)", "大勢", "おおぜい", "oozei", "many people, crowd", "Noun", "人が大勢いる (hito ga oozei iru)", "there are many people"],
+      ["お (O-row)", "お母さん", "おかあさん", "okaasan", "mother (polite)", "Noun", "お母さんに電話する (okaasan ni denwa suru)", "to call one's mother"],
+      ["お (O-row)", "お菓子", "おかし", "okashi", "sweets, snacks, candy", "Noun", "日本のお菓子 (nihon no okashi)", "Japanese sweets"],
+      ["お (O-row)", "お金", "おかね", "okane", "money", "Noun", "お金をおろす (okane o orosu)", "to withdraw money"],
+      ["お (O-row)", "起きる", "おきる", "okiru", "to get up, to wake up", "Verb", "六時に起きる (rokuji ni okiru)", "to wake up at 6 o'clock"],
+      ["お (O-row)", "置く", "おく", "oku", "to put, to place", "Verb", "テーブルの上に置く (teeburu no ue ni oku)", "to put on the table"],
+      ["お (O-row)", "奥さん", "おくさん", "okusan", "(someone else's) wife", "Noun", "田中さんの奥さん (tanaka-san no okusan)", "Mr. Tanaka's wife"],
+      ["お (O-row)", "お酒", "おさけ", "osake", "alcohol, sake", "Noun", "お酒を飲む (osake o nomu)", "to drink alcohol"],
+      ["お (O-row)", "お皿", "おさら", "osara", "plate, dish", "Noun", "お皿を洗う (osara o arau)", "to wash the dishes"],
+      ["お (O-row)", "伯父さん / 叔父さん", "おじさん", "ojisan", "uncle; middle-aged man", "Noun", "大阪のおじさん (oosaka no ojisan)", "uncle in Osaka"],
+      ["お (O-row)", "おじいさん", "おじいさん", "ojiisan", "grandfather; elderly man", "Noun", "優しいおじいさん (yasashii ojiisan)", "kind grandfather"],
+      ["お (O-row)", "教える", "おしえる", "oshieru", "to teach; to tell/inform", "Verb", "日本語を教える (nihongo o oshieru)", "to teach Japanese"],
+      ["お (O-row)", "押す", "おす", "osu", "to push, to press", "Verb", "ボタンを押す (botan o osu)", "to press a button"],
+      ["お (O-row)", "遅い", "おそい", "osoi", "slow; late", "i-Adjective", "バスが遅い (basu ga osoi)", "the bus is slow/late"],
+      ["お (O-row)", "お茶", "おちゃ", "ocha", "tea (usually green tea)", "Noun", "お茶を入れる (ocha o ireru)", "to make green tea"],
+      ["お (O-row)", "お手洗い", "おてあらい", "otearai", "restroom, lavatory", "Noun", "お手洗いはどこですか (otearai wa doko desu ka)", "where is the restroom?"],
+      ["お (O-row)", "お父さん", "おとうさん", "otousan", "father (polite)", "Noun", "お父さんの仕事 (otousan no shigoto)", "father's job"],
+      ["お (O-row)", "弟", "おとうと", "otouto", "(my) younger brother", "Noun", "弟と遊ぶ (otouto to asobu)", "to play with my younger brother"],
+      ["お (O-row)", "男", "おとこ", "otoko", "man, male", "Noun", "男の人 (otoko no hito)", "man"],
+      ["お (O-row)", "男の子", "おとこのこ", "otokonoko", "boy", "Noun", "元気な男の子 (genki na otokonoko)", "energetic boy"],
+      ["お (O-row)", "一昨日", "おととい", "ototoi", "day before yesterday", "Noun", "一昨日来ました (ototoi kimashita)", "I came the day before yesterday"],
+      ["お (O-row)", "一昨年", "おととし", "ototoshi", "year before last", "Noun", "一昨年の夏 (ototoshi no natsu)", "the summer before last"],
+      ["お (O-row)", "大人", "おとな", "otona", "adult", "Noun", "大人二枚 (otona nimai)", "two adult tickets"],
+      ["お (O-row)", "お腹", "おなか", "onaka", "stomach, belly", "Noun", "お腹がすく (onaka ga suku)", "to get hungry"],
+      ["お (O-row)", "同じ", "おなじ", "onaji", "same, identical", "Adjective", "同じクラス (onaji kurasu)", "the same class"],
+      ["お (O-row)", "お兄さん", "おにいさん", "oniisan", "older brother (polite)", "Noun", "お兄さんは学生ですか (oniisan wa gakusei desu ka)", "is your older brother a student?"],
+      ["お (O-row)", "伯母さん / 叔母さん", "おばさん", "obasan", "aunt; middle-aged woman", "Noun", "おばさんの家 (obasan no ie)", "aunt's house"],
+      ["お (O-row)", "おばあさん", "おばあさん", "obaasan", "grandmother; elderly woman", "Noun", "おばあさんの話 (obaasan no hanashi)", "grandmother's story"],
+      ["お (O-row)", "お弁当", "おべんとう", "obentou", "boxed lunch, bento", "Noun", "お弁当を作る (obentou o tsukuru)", "to make a bento lunch"],
+      ["お (O-row)", "覚える", "おぼえる", "oboeru", "to memorize, to remember, to learn", "Verb", "漢字を覚える (kanji o oboeru)", "to memorize kanji"],
+      ["お (O-row)", "重い", "おもい", "omoi", "heavy", "i-Adjective", "重い荷物 (omoi nimotsu)", "heavy luggage"],
+      ["お (O-row)", "面白い", "おもしろい", "omoshiroi", "interesting; funny", "i-Adjective", "面白い本 (omoshiroi hon)", "an interesting book"],
+      ["お (O-row)", "泳ぐ", "およぐ", "oyogu", "to swim", "Verb", "プールで泳ぐ (puuru de oyogu)", "to swim in the pool"],
+      ["お (O-row)", "降りる", "おりる", "oriru", "to get off (a vehicle); to descend", "Verb", "電車を降りる (densha o oriru)", "to get off the train"],
+      ["お (O-row)", "終わる", "おわる", "owaru", "to end, to finish", "Verb", "仕事が終わる (shigoto ga owaru)", "work finishes"],
+      ["お (O-row)", "音楽", "おんがく", "ongaku", "music", "Noun", "音楽を聞く (ongaku o kiku)", "to listen to music"],
+      ["お (O-row)", "女", "おんな", "onna", "woman, female", "Noun", "女の人 (onna no hito)", "woman"],
+      ["お (O-row)", "女の子", "おんなのこ", "onnanoko", "girl", "Noun", "かわいい女の子 (kawaii onnanoko)", "cute girl"],
+
+      // ===================== か (KA-ROW) =====================
+      ["か (Ka-row)", "外国", "がいこく", "gaikoku", "foreign country", "Noun", "外国へ行く (gaikoku e iku)", "to go to a foreign country"],
+      ["か (Ka-row)", "外国人", "がいこくじん", "gaikokujin", "foreigner", "Noun", "外国人の友だち (gaikokujin no tomodachi)", "foreign friend"],
+      ["か (Ka-row)", "会社", "かいしゃ", "kaisha", "company, corporation", "Noun", "会社の方 (kaisha no kata)", "person from the company"],
+      ["か (Ka-row)", "階段", "かいだん", "kaidan", "stairs, stairway", "Noun", "階段を上る (kaidan o noboru)", "to go up the stairs"],
+      ["か (Ka-row)", "買い物", "かいもの", "kaimono", "shopping", "Noun", "買い物に行く (kaimono ni iku)", "to go shopping"],
+      ["か (Ka-row)", "買う", "かう", "kau", "to buy", "Verb", "パンを買う (pan o kau)", "to buy bread"],
+      ["か (Ka-row)", "返す", "かえす", "kaesu", "to return (something)", "Verb", "本を返す (hon o kaesu)", "to return a book"],
+      ["か (Ka-row)", "帰る", "かえる", "kaeru", "to return home, to go back", "Verb", "国へ帰る (kuni e kaeru)", "to return to one's country"],
+      ["か (Ka-row)", "顔", "かお", "kao", "face", "Noun", "顔を洗う (kao o arau)", "to wash one's face"],
+      ["か (Ka-row)", "かかる", "かかる", "kakaru", "to take (time or money)", "Verb", "三十分かかる (sanjuppun kakaru)", "it takes 30 minutes"],
+      ["か (Ka-row)", "鍵", "かぎ", "kagi", "key; lock", "Noun", "鍵をかける (kagi o kakeru)", "to lock"],
+      ["か (Ka-row)", "書く", "かく", "kaku", "to write", "Verb", "手紙を書く (tegami o kaku)", "to write a letter"],
+      ["か (Ka-row)", "学生", "がくせい", "gakusei", "student", "Noun", "日本語の学生 (nihongo no gakusei)", "Japanese language student"],
+      ["か (Ka-row)", "かける", "かける", "kakeru", "to put on (glasses); to make (a call)", "Verb", "眼鏡をかける / 電話をかける", "to wear glasses / make a call"],
+      ["か (Ka-row)", "傘", "かさ", "kasa", "umbrella", "Noun", "傘をさす (kasa o sasu)", "to hold up an umbrella"],
+      ["か (Ka-row)", "貸す", "かす", "kasu", "to lend", "Verb", "ペンを貸す (pen o kasu)", "to lend a pen"],
+      ["か (Ka-row)", "風", "かぜ", "kaze", "wind, breeze", "Noun", "風が強い (kaze ga tsuyoi)", "the wind is strong"],
+      ["か (Ka-row)", "風邪", "かぜ", "kaze", "cold (illness)", "Noun", "風邪をひく (kaze o hiku)", "to catch a cold"],
+      ["か (Ka-row)", "方", "かた", "kata", "person (polite); way of doing", "Noun", "あの方はどなたですか (ano kata wa donata desu ka)", "who is that person?"],
+      ["か (Ka-row)", "家族", "かぞく", "kazoku", "family", "Noun", "私の家族 (watashi no kazoku)", "my family"],
+      ["か (Ka-row)", "片仮名", "カタカナ", "katakana", "Katakana syllabary", "Noun", "カタカナで書く (katakana de kaku)", "to write in Katakana"],
+      ["か (Ka-row)", "学校", "がっこう", "gakkou", "school", "Noun", "学校が始まる (gakkou ga hajimaru)", "school starts"],
+      ["か (Ka-row)", "カップ", "カップ", "kappu", "cup, mug", "Noun", "コーヒーカップ (koohii kappu)", "coffee cup"],
+      ["か (Ka-row)", "家庭", "かてい", "katei", "home, household, family", "Noun", "明るい家庭 (akarui katei)", "cheerful household"],
+      ["か (Ka-row)", "角", "かど", "kado", "corner (e.g. of a street/desk)", "Noun", "角を曲がる (kado o magaru)", "to turn the corner"],
+      ["か (Ka-row)", "かばん", "かばん", "kaban", "bag, briefcase", "Noun", "重いかばん (omoi kaban)", "heavy bag"],
+      ["か (Ka-row)", "花瓶", "かびん", "kabin", "flower vase", "Noun", "花瓶に花を飾る (kabin ni hana o kazaru)", "to arrange flowers in a vase"],
+      ["か (Ka-row)", "かぶる", "かぶる", "kaburu", "to put on (a hat/cap)", "Verb", "帽子をかぶる (boushi o kaburu)", "to wear a hat"],
+      ["か (Ka-row)", "紙", "かみ", "kami", "paper", "Noun", "白い紙 (shiroi kami)", "white paper"],
+      ["か (Ka-row)", "カメラ", "カメラ", "kamera", "camera", "Noun", "カメラで写真を撮る (kamera de shashin o toru)", "to take a photo with a camera"],
+      ["か (Ka-row)", "火曜日", "かようび", "kayoubi", "Tuesday", "Noun", "火曜日の朝 (kayoubi no asa)", "Tuesday morning"],
+      ["か (Ka-row)", "辛い", "からい", "karai", "spicy, hot", "i-Adjective", "辛いカレー (karai karee)", "spicy curry"],
+      ["か (Ka-row)", "体", "からだ", "karada", "body; health", "Noun", "体にいい (karada ni ii)", "good for the body/health"],
+      ["か (Ka-row)", "借りる", "かりる", "kariru", "to borrow, to rent", "Verb", "図書館で本を借りる (toshokan de hon o kariru)", "to borrow a book from the library"],
+      ["か (Ka-row)", "軽い", "かるい", "karui", "light (not heavy)", "i-Adjective", "軽い靴 (karui kutsu)", "lightweight shoes"],
+      ["か (Ka-row)", "カレンダー", "カレンダー", "karendaa", "calendar", "Noun", "壁のカレンダー (kabe no karendaa)", "wall calendar"],
+      ["か (Ka-row)", "川 / 河", "かわ", "kawa", "river, stream", "Noun", "川の近く (kawa no chikaku)", "near the river"],
+      ["か (Ka-row)", "かわいい", "かわいい", "kawaii", "cute, adorable", "i-Adjective", "かわいい猫 (kawaii neko)", "cute cat"],
+      ["か (Ka-row)", "漢字", "かんじ", "kanji", "Kanji (Chinese characters)", "Noun", "漢字の練習 (kanji no renshuu)", "kanji practice"],
+
+      // ===================== き (KI-ROW) =====================
+      ["き (Ki-row)", "木", "き", "ki", "tree; wood", "Noun", "大きな木 (ookina ki)", "big tree"],
+      ["き (Ki-row)", "黄色", "きいろ", "kiiro", "yellow", "Noun", "黄色が好き (kiiro ga suki)", "I like yellow"],
+      ["き (Ki-row)", "黄色い", "きいろい", "kiiroi", "yellow", "i-Adjective", "黄色い花 (kiiroi hana)", "yellow flower"],
+      ["き (Ki-row)", "消える", "きえる", "kieru", "to go out, to disappear, to turn off", "Verb", "電気が消える (denki ga kieru)", "the light goes off"],
+      ["き (Ki-row)", "聞く", "きく", "kiku", "to hear, to listen; to ask", "Verb", "先生に聞く (sensei ni kiku)", "to ask the teacher"],
+      ["き (Ki-row)", "北", "きた", "kita", "north", "Noun", "北の空 (kita no sora)", "northern sky"],
+      ["き (Ki-row)", "ギター", "ギター", "gitaa", "guitar", "Noun", "ギターを弾く (gitaa o hiku)", "to play the guitar"],
+      ["き (Ki-row)", "汚い", "きたない", "kitanai", "dirty, messy", "i-Adjective", "汚い部屋 (kitanai heya)", "messy room"],
+      ["き (Ki-row)", "喫茶店", "きっさてん", "kissaten", "coffee shop, tearoom, cafe", "Noun", "喫茶店で休む (kissaten de yasumu)", "to rest at a cafe"],
+      ["き (Ki-row)", "切手", "きって", "kitte", "postage stamp", "Noun", "切手を貼る (kitte o haru)", "to put on a stamp"],
+      ["き (Ki-row)", "切符", "きっぷ", "kippu", "ticket", "Noun", "電車の切符 (densha no kippu)", "train ticket"],
+      ["き (Ki-row)", "昨日", "きのう", "kinou", "yesterday", "Noun", "昨日の夜 (kinou no yoru)", "last night"],
+      ["き (Ki-row)", "九", "きゅう / く", "kyuu / ku", "nine", "Noun", "九時 (kuji)", "9 o'clock"],
+      ["き (Ki-row)", "牛肉", "ぎゅうにく", "gyuuniku", "beef", "Noun", "牛肉を買う (gyuuniku o kau)", "to buy beef"],
+      ["き (Ki-row)", "牛乳", "ぎゅうにゅう", "gyuunyuu", "milk", "Noun", "冷たい牛乳 (tsumetai gyuunyuu)", "cold milk"],
+      ["き (Ki-row)", "今日", "きょう", "kyou", "today", "Noun", "今日の予定 (kyou no yotei)", "today's schedule"],
+      ["き (Ki-row)", "教室", "きょうしつ", "kyoushitsu", "classroom", "Noun", "広い教室 (hiroi kyoushitsu)", "spacious classroom"],
+      ["き (Ki-row)", "兄弟", "きょうだい", "kyoudai", "siblings, brothers and sisters", "Noun", "兄弟が三人います (kyoudai ga sannin imasu)", "I have three siblings"],
+      ["き (Ki-row)", "去年", "きょねん", "kyonen", "last year", "Noun", "去年の冬 (kyonen no fuyu)", "last winter"],
+      ["き (Ki-row)", "嫌い", "きらい", "kirai", "disliked, hated", "na-Adjective", "野菜が嫌い (yasai ga kirai)", "dislike vegetables"],
+      ["き (Ki-row)", "切る", "きる", "kiru", "to cut", "Verb", "紙を切る (kami o kiru)", "to cut paper"],
+      ["き (Ki-row)", "着る", "きる", "kiru", "to wear, to put on (upper body)", "Verb", "シャツを着る (shatsu o kiru)", "to wear a shirt"],
+      ["き (Ki-row)", "きれい", "きれい", "kirei", "pretty, beautiful; clean", "na-Adjective", "きれいな海 (kirei na umi)", "beautiful sea"],
+      ["き (Ki-row)", "キロ", "キロ", "kiro", "kilo (kilogram / kilometer)", "Noun", "五キロ走る (gokiro hashiru)", "to run 5 kilometers"],
+      ["き (Ki-row)", "銀行", "ぎんこう", "ginkou", "bank", "Noun", "銀行の前 (ginkou no mae)", "in front of the bank"],
+      ["き (Ki-row)", "金曜日", "きんようび", "kinyoubi", "Friday", "Noun", "今週の金曜日 (konshuu no kinyoubi)", "this Friday"],
+
+      // ===================== く (KU-ROW) =====================
+      ["く (Ku-row)", "薬", "くすり", "kusuri", "medicine", "Noun", "薬を飲む (kusuri o nomu)", "to take medicine"],
+      ["く (Ku-row)", "ください", "ください", "kudasai", "please give me / please do", "Expression", "水をください (mizu o kudasai)", "water, please"],
+      ["く (Ku-row)", "果物", "くだもの", "kudamono", "fruit", "Noun", "甘い果物 (amai kudamono)", "sweet fruit"],
+      ["く (Ku-row)", "口", "くち", "kuchi", "mouth", "Noun", "口を開ける (kuchi o akeru)", "to open one's mouth"],
+      ["く (Ku-row)", "靴", "くつ", "kutsu", "shoes", "Noun", "靴を履く (kutsu o haku)", "to put on shoes"],
+      ["く (Ku-row)", "靴下", "くつした", "kutsushita", "socks", "Noun", "白い靴下 (shiroi kutsushita)", "white socks"],
+      ["く (Ku-row)", "国", "くに", "kuni", "country, homeland", "Noun", "お国はどちらですか (okuni wa dochira desu ka)", "what country are you from?"],
+      ["く (Ku-row)", "曇り", "くもり", "kumori", "cloudy weather", "Noun", "明日は曇りです (ashita wa kumori desu)", "tomorrow will be cloudy"],
+      ["く (Ku-row)", "曇る", "くもる", "kumoru", "to become cloudy", "Verb", "空が曇る (sora ga kumoru)", "the sky clouds over"],
+      ["く (Ku-row)", "暗い", "くらい", "kurai", "dark, gloomy", "i-Adjective", "外が暗い (soto ga kurai)", "it is dark outside"],
+      ["く (Ku-row)", "クラス", "クラス", "kurasu", "class", "Noun", "日本語のクラス (nihongo no kurasu)", "Japanese class"],
+      ["く (Ku-row)", "グラム", "グラム", "guramu", "gram", "Noun", "百グラム (hyaku guramu)", "100 grams"],
+      ["く (Ku-row)", "来る", "くる", "kuru", "to come", "Verb", "友だちが来る (tomodachi ga kuru)", "a friend comes over"],
+      ["く (Ku-row)", "車", "くるま", "kuruma", "car, automobile", "Noun", "車で出かける (kuruma de dekakeru)", "to go out by car"],
+      ["く (Ku-row)", "黒", "くろ", "kuro", "black", "Noun", "黒のかばん (kuro no kaban)", "black bag"],
+      ["く (Ku-row)", "黒い", "くろい", "kuroi", "black", "i-Adjective", "黒い髪 (kuroi kami)", "black hair"],
+
+      // ===================== け (KE-ROW) =====================
+      ["け (Ke-row)", "警官", "けいかん", "keikan", "police officer", "Noun", "警官に道を聞く (keikan ni michi o kiku)", "to ask a police officer for directions"],
+      ["け (Ke-row)", "今朝", "けさ", "kesa", "this morning", "Noun", "今朝の新聞 (kesa no shinbun)", "this morning's newspaper"],
+      ["け (Ke-row)", "消す", "けす", "kesu", "to erase; to turn off (power/light)", "Verb", "テレビを消す (terebi o kesu)", "to turn off the TV"],
+      ["け (Ke-row)", "結構", "けっこう", "kekkou", "fine, alright; no thank you; quite", "na-Adjective", "いいえ、結構です (iie, kekkou desu)", "no, thank you"],
+      ["け (Ke-row)", "結婚", "けっこん", "kekkon", "marriage", "Noun", "結婚する (kekkon suru)", "to get married"],
+      ["け (Ke-row)", "月曜日", "げつようび", "getsuyoubi", "Monday", "Noun", "月曜日から金曜日まで (getsuyoubi kara kinyoubi made)", "from Monday to Friday"],
+      ["け (Ke-row)", "玄関", "げんかん", "genkan", "entranceway, front door foyer", "Noun", "玄関で靴を脱ぐ (genkan de kutsu o nugu)", "to take off shoes at the entrance"],
+      ["け (Ke-row)", "元気", "げんき", "genki", "healthy, energetic, fine", "na-Adjective", "元気な子ども (genki na kodomo)", "energetic child"],
+
+      // ===================== こ (KO-ROW) =====================
+      ["こ (Ko-row)", "公園", "こうえん", "kouen", "park", "Noun", "公園を散歩する (kouen o sanpo suru)", "to take a walk in the park"],
+      ["こ (Ko-row)", "交差点", "こうさてん", "kousaten", "intersection, crossing", "Noun", "次の交差点 (tsugi no kousaten)", "the next intersection"],
+      ["こ (Ko-row)", "紅茶", "こうちゃ", "koucha", "black tea", "Noun", "レモンを入れた紅茶 (remon o ireta koucha)", "black tea with lemon"],
+      ["こ (Ko-row)", "交番", "こうばん", "kouban", "police box", "Noun", "駅前の交番 (ekimae no kouban)", "police box in front of the station"],
+      ["こ (Ko-row)", "声", "こえ", "koe", "voice", "Noun", "大きい声で話す (ookii koe de hanasu)", "to speak in a loud voice"],
+      ["こ (Ko-row)", "コート", "コート", "kooto", "coat; tennis court", "Noun", "暖かいコート (atatakai kooto)", "warm coat"],
+      ["こ (Ko-row)", "コーヒー", "コーヒー", "koohii", "coffee", "Noun", "コーヒーを一杯飲む (koohii o ippai nomu)", "to drink a cup of coffee"],
+      ["こ (Ko-row)", "ここ", "ここ", "koko", "here, this place", "Pronoun", "ここに座ってください (koko ni suwatte kudasai)", "please sit here"],
+      ["こ (Ko-row)", "午後", "ごご", "gogo", "afternoon, P.M.", "Noun", "午後三時 (gogo sanji)", "3:00 PM"],
+      ["こ (Ko-row)", "九日", "ここのか", "kokonoka", "ninth day of the month; 9 days", "Noun", "九月九日 (kugatsu kokonoka)", "September 9th"],
+      ["こ (Ko-row)", "九つ", "ここのつ", "kokonotsu", "nine (things)", "Noun", "九つあります (kokonotsu arimasu)", "there are nine"],
+      ["こ (Ko-row)", "午前", "ごぜん", "gozen", "morning, A.M.", "Noun", "午前九時 (gozen kuji)", "9:00 AM"],
+      ["こ (Ko-row)", "答える", "こたえる", "kotaeru", "to answer, to reply", "Verb", "質問に答える (shitsumon ni kotaeru)", "to answer a question"],
+      ["こ (Ko-row)", "こちら", "こちら", "kochira", "this way, here, this person (polite)", "Pronoun", "こちらは田中さんです (kochira wa tanaka-san desu)", "this is Mr. Tanaka"],
+      ["こ (Ko-row)", "コップ", "コップ", "koppu", "glass, tumbler", "Noun", "コップの水 (koppu no mizu)", "water in a glass"],
+      ["こ (Ko-row)", "今年", "ことし", "kotoshi", "this year", "Noun", "今年の夏 (kotoshi no natsu)", "this summer"],
+      ["こ (Ko-row)", "言葉", "ことば", "kotoba", "word, language", "Noun", "新しい言葉 (atarashii kotoba)", "new word"],
+      ["こ (Ko-row)", "子ども", "こども", "kodomo", "child, children", "Noun", "子どもが遊ぶ (kodomo ga asobu)", "children play"],
+      ["こ (Ko-row)", "この", "この", "kono", "this (pre-noun)", "Pre-noun", "このかばん (kono kaban)", "this bag"],
+      ["こ (Ko-row)", "ご飯", "ごはん", "gohan", "cooked rice; meal", "Noun", "晩ご飯 (bangohan)", "dinner"],
+      ["こ (Ko-row)", "コピー", "コピー", "kopii", "copy, photocopy", "Noun", "コピーをとる (kopii o toru)", "to make a photocopy"],
+      ["こ (Ko-row)", "困る", "こまる", "komaru", "to be troubled, to be in difficulty", "Verb", "道に迷って困る (michi ni mayotte komaru)", "to be troubled after getting lost"],
+      ["こ (Ko-row)", "これ", "これ", "kore", "this one", "Pronoun", "これをください (kore o kudasai)", "I'll take this one, please"],
+      ["こ (Ko-row)", "今月", "こんげつ", "kongetsu", "this month", "Noun", "今月の末 (kongetsu no sue)", "the end of this month"],
+      ["こ (Ko-row)", "今週", "こんしゅう", "konshuu", "this week", "Noun", "今週の土曜日 (konshuu no doyoubi)", "this Saturday"],
+      ["こ (Ko-row)", "こんな", "こんな", "konna", "such, like this", "Pre-noun", "こんな時 (konna toki)", "at a time like this"],
+      ["こ (Ko-row)", "今晩", "こんばん", "konban", "tonight, this evening", "Noun", "今晩は星がきれい (konban wa hoshi ga kirei)", "the stars are pretty tonight"],
+
+      // ===================== さ (SA-ROW) =====================
+      ["さ (Sa-row)", "さあ", "さあ", "saa", "come now, well; I'm not sure", "Expression", "さあ、行きましょう (saa, ikimashou)", "well then, let's go"],
+      ["さ (Sa-row)", "財布", "さいふ", "saifu", "wallet, purse", "Noun", "財布を忘れる (saifu o wasureru)", "to forget one's wallet"],
+      ["さ (Sa-row)", "魚", "さかな", "sakana", "fish", "Noun", "新しい魚 (atarashii sakana)", "fresh fish"],
+      ["さ (Sa-row)", "先", "さき", "saki", "ahead, previous, earlier", "Noun", "お先にどうぞ (osaki ni douzo)", "please go ahead first"],
+      ["さ (Sa-row)", "咲く", "さく", "saku", "to bloom", "Verb", "桜が咲く (sakura ga saku)", "cherry blossoms bloom"],
+      ["さ (Sa-row)", "作文", "さくぶん", "sakubun", "essay, composition", "Noun", "日本語で作文を書く (nihongo de sakubun o kaku)", "to write an essay in Japanese"],
+      ["さ (Sa-row)", "差す", "さす", "sasu", "to hold up (an umbrella)", "Verb", "傘を差す (kasa o sasu)", "to open/hold an umbrella"],
+      ["さ (Sa-row)", "雑誌", "ざっし", "zasshi", "magazine", "Noun", "ファッションの雑誌 (fasshon no zasshi)", "fashion magazine"],
+      ["さ (Sa-row)", "砂糖", "さとう", "satou", "sugar", "Noun", "砂糖を入れる (satou o ireru)", "to put in sugar"],
+      ["さ (Sa-row)", "寒い", "さむい", "samui", "cold (weather)", "i-Adjective", "外は寒い (soto wa samui)", "it is cold outside"],
+      ["さ (Sa-row)", "再来年", "さらいねん", "sarainen", "year after next", "Noun", "再来年卒業する (sarainen sotsugyou suru)", "to graduate the year after next"],
+      ["さ (Sa-row)", "散歩", "さんぽ", "sanpo", "walk, stroll", "Noun", "朝、散歩する (asa, sanpo suru)", "to take a walk in the morning"],
+
+      // ===================== し (SHI-ROW) =====================
+      ["し (Shi-row)", "塩", "しお", "shio", "salt", "Noun", "塩を少し入れる (shio o sukoshi ireru)", "to add a little salt"],
+      ["し (Shi-row)", "しかし", "しかし", "shikashi", "however, but", "Conjunction", "しかし、難しいです (shikashi, muzukashii desu)", "however, it is difficult"],
+      ["し (Shi-row)", "時間", "じかん", "jikan", "time; hour", "Noun", "時間がありません (jikan ga arimasen)", "there is no time"],
+      ["し (Shi-row)", "仕事", "しごと", "shigoto", "work, job", "Noun", "仕事を探す (shigoto o sagasu)", "to look for a job"],
+      ["し (Shi-row)", "辞書", "じしょ", "jisho", "dictionary", "Noun", "辞書を引く (jisho o hiku)", "to look up in a dictionary"],
+      ["し (Shi-row)", "静か", "しずか", "shizuka", "quiet, peaceful", "na-Adjective", "静かな町 (shizuka na machi)", "quiet town"],
+      ["し (Shi-row)", "下", "した", "shita", "under, below, beneath", "Noun", "机の下 (tsukue no shita)", "under the desk"],
+      ["し (Shi-row)", "質問", "しつもん", "shitsumon", "question", "Noun", "質問があります (shitsumon ga arimasu)", "I have a question"],
+      ["し (Shi-row)", "自転車", "じてんしゃ", "jitensha", "bicycle", "Noun", "自転車に乗る (jitensha ni noru)", "to ride a bicycle"],
+      ["し (Shi-row)", "自動車", "じどうしゃ", "jidousha", "automobile, car", "Noun", "日本の自動車 (nihon no jidousha)", "Japanese automobile"],
+      ["し (Shi-row)", "死ぬ", "しぬ", "shinu", "to die", "Verb", "虫が死ぬ (mushi ga shinu)", "an insect dies"],
+      ["し (Shi-row)", "字引", "じびき", "jibiki", "dictionary", "Noun", "漢字の字引 (kanji no jibiki)", "kanji dictionary"],
+      ["し (Shi-row)", "自分", "じぶん", "jibun", "oneself", "Pronoun", "自分で作る (jibun de tsukuru)", "to make it by oneself"],
+      ["し (Shi-row)", "閉まる", "しまる", "shimaru", "to close, to be closed", "Verb", "店が閉まる (mise ga shimaru)", "the shop closes"],
+      ["し (Shi-row)", "閉める", "しめる", "shimeru", "to close, to shut (something)", "Verb", "ドアを閉める (doa o shimeru)", "to close the door"],
+      ["し (Shi-row)", "締める", "しめる", "shimeru", "to tie, to fasten", "Verb", "ネクタイを締める (nekutai o shimeru)", "to tie a necktie"],
+      ["し (Shi-row)", "じゃ / じゃあ", "じゃ / じゃあ", "ja / jaa", "well then", "Expression", "じゃあ、また明日 (jaa, mata ashita)", "well then, see you tomorrow"],
+      ["し (Shi-row)", "写真", "しゃしん", "shashin", "photograph, picture", "Noun", "写真を撮る (shashin o toru)", "to take a photograph"],
+      ["し (Shi-row)", "シャツ", "シャツ", "shatsu", "shirt", "Noun", "白いシャツ (shiroi shatsu)", "white shirt"],
+      ["し (Shi-row)", "シャワー", "シャワー", "shawaa", "shower", "Noun", "シャワーを浴びる (shawaa o abiru)", "to take a shower"],
+      ["し (Shi-row)", "授業", "じゅぎょう", "jugyou", "class, lesson", "Noun", "授業に出る (jugyou ni deru)", "to attend class"],
+      ["し (Shi-row)", "宿題", "しゅくだい", "shukudai", "homework", "Noun", "宿題をする (shukudai o suru)", "to do homework"],
+      ["し (Shi-row)", "上手", "じょうず", "jouzu", "skilled, good at", "na-Adjective", "日本語が上手ですね (nihongo ga jouzu desu ne)", "you are good at Japanese!"],
+      ["し (Shi-row)", "丈夫", "じょうぶ", "joubu", "strong, durable, healthy", "na-Adjective", "丈夫なかばん (joubu na kaban)", "sturdy bag"],
+      ["し (Shi-row)", "醤油", "しょうゆ", "shouyu", "soy sauce", "Noun", "醤油をつける (shouyu o tsukeru)", "to dip in soy sauce"],
+      ["し (Shi-row)", "食堂", "しょくどう", "shokudou", "cafeteria, dining hall", "Noun", "会社の食堂 (kaisha no shokudou)", "company cafeteria"],
+      ["し (Shi-row)", "知る", "しる", "shiru", "to know, to find out", "Verb", "電話番号を知る (denwa bangou o shiru)", "to know the phone number"],
+      ["し (Shi-row)", "白", "しろ", "shiro", "white", "Noun", "白のシャツ (shiro no shatsu)", "white shirt"],
+      ["し (Shi-row)", "白い", "しろい", "shiroi", "white", "i-Adjective", "白い雪 (shiroi yuki)", "white snow"],
+      ["し (Shi-row)", "新聞", "しんぶん", "shinbun", "newspaper", "Noun", "毎朝新聞を読む (maiasa shinbun o yomu)", "to read the newspaper every morning"],
+
+      // ===================== す (SU-ROW) =====================
+      ["す (Su-row)", "水曜日", "すいようび", "suiyoubi", "Wednesday", "Noun", "水曜日の午後 (suiyoubi no gogo)", "Wednesday afternoon"],
+      ["す (Su-row)", "吸う", "すう", "suu", "to breathe in, to smoke", "Verb", "空気を吸う (kuuki o suu)", "to breathe air"],
+      ["す (Su-row)", "スカート", "スカート", "sukaato", "skirt", "Noun", "長いスカート (nagai sukaato)", "long skirt"],
+      ["す (Su-row)", "好き", "すき", "suki", "liked, fond of, favorite", "na-Adjective", "音楽が好きです (ongaku ga suki desu)", "I like music"],
+      ["す (Su-row)", "少ない", "すくない", "sukunai", "few, scarce, a little", "i-Adjective", "人が少ない (hito ga sukunai)", "there are few people"],
+      ["す (Su-row)", "すぐ", "すぐ", "sugu", "immediately, right away", "Adverb", "すぐ行きます (sugu ikimasu)", "I'll go right away"],
+      ["す (Su-row)", "少し", "すこし", "sukoshi", "a little, a few", "Adverb", "少し休む (sukoshi yasumu)", "to rest a little"],
+      ["す (Su-row)", "涼しい", "すずしい", "suzushii", "cool, refreshing (weather)", "i-Adjective", "涼しい風 (suzushii kaze)", "cool breeze"],
+      ["す (Su-row)", "ストーブ", "ストーブ", "sutoobu", "heater, stove", "Noun", "ストーブをつける (sutoobu o tsukeru)", "to turn on the heater"],
+      ["す (Su-row)", "スプーン", "スプーン", "supuun", "spoon", "Noun", "スプーンで食べる (supuun de taberu)", "to eat with a spoon"],
+      ["す (Su-row)", "スポーツ", "スポーツ", "supootsu", "sports", "Noun", "スポーツをする (supootsu o suru)", "to play sports"],
+      ["す (Su-row)", "ズボン", "ズボン", "zubon", "trousers, pants", "Noun", "ズボンを履く (zubon o haku)", "to wear pants"],
+      ["す (Su-row)", "住む", "すむ", "sumu", "to live, to reside", "Verb", "東京に住む (toukyou ni sumu)", "to live in Tokyo"],
+      ["す (Su-row)", "スリッパ", "スリッパ", "surippa", "slippers", "Noun", "スリッパを履く (surippa o haku)", "to put on slippers"],
+      ["す (Su-row)", "する", "する", "suru", "to do, to make", "Verb", "テニスをする (tenisu o suru)", "to play tennis"],
+      ["す (Su-row)", "座る", "すわる", "suwaru", "to sit", "Verb", "ここに座る (koko ni suwaru)", "to sit here"],
+
+      // ===================== せ (SE-ROW) =====================
+      ["せ (Se-row)", "背", "せ", "se", "height, stature; back", "Noun", "背が高い (se ga takai)", "tall (of stature)"],
+      ["せ (Se-row)", "生徒", "せいと", "seito", "pupil, student", "Noun", "高校の生徒 (koukou no seito)", "high school student"],
+      ["せ (Se-row)", "セーター", "セーター", "seetaa", "sweater", "Noun", "赤いセーター (akai seetaa)", "red sweater"],
+      ["せ (Se-row)", "石鹸", "せっけん", "sekken", "soap", "Noun", "石鹸で手を洗う (sekken de te o arau)", "to wash hands with soap"],
+      ["せ (Se-row)", "背広", "せびろ", "sebiro", "business suit", "Noun", "背広を着る (sebiro o kiru)", "to wear a business suit"],
+      ["せ (Se-row)", "狭い", "せまい", "semai", "narrow, small (area)", "i-Adjective", "狭い道 (semai michi)", "narrow road"],
+      ["せ (Se-row)", "ゼロ", "ゼロ", "zero", "zero", "Noun", "ゼロから始める (zero kara hajimeru)", "start from zero"],
+      ["せ (Se-row)", "千", "せん", "sen", "thousand", "Noun", "千円 (sen-en)", "1,000 yen"],
+      ["せ (Se-row)", "先月", "せんげつ", "sengetsu", "last month", "Noun", "先月の旅行 (sengetsu no ryokou)", "last month's trip"],
+      ["せ (Se-row)", "先週", "せんしゅう", "senshuu", "last week", "Noun", "先週の日曜日 (senshuu no nichiyoubi)", "last Sunday"],
+      ["せ (Se-row)", "先生", "せんせい", "sensei", "teacher, instructor, doctor", "Noun", "日本語の先生 (nihongo no sensei)", "Japanese teacher"],
+      ["せ (Se-row)", "洗濯", "せんたく", "sentaku", "laundry, washing", "Noun", "洗濯をする (sentaku o suru)", "to do the laundry"],
+      ["せ (Se-row)", "全部", "ぜんぶ", "zenbu", "all, everything", "Noun", "全部でいくらですか (zenbu de ikura desu ka)", "how much is it in total?"],
+
+      // ===================== そ (SO-ROW) =====================
+      ["そ (So-row)", "掃除", "そうじ", "souji", "cleaning, sweeping", "Noun", "部屋の掃除をする (heya no souji o suru)", "to clean the room"],
+      ["そ (So-row)", "そうして / そして", "そうして / そして", "soushite / soshite", "and, and then", "Conjunction", "本を読みました。そして寝ました。", "I read a book. And then I slept."],
+      ["そ (So-row)", "そこ", "そこ", "soko", "there (near listener)", "Pronoun", "そこに置いてください (soko ni oite kudasai)", "please put it there"],
+      ["そ (So-row)", "そちら", "そちら", "sochira", "that way, there (polite)", "Pronoun", "そちらはどうですか (sochira wa dou desu ka)", "how are things on your end?"],
+      ["そ (So-row)", "外", "そと", "soto", "outside", "Noun", "外で遊ぶ (soto de asobu)", "to play outside"],
+      ["そ (So-row)", "その", "その", "sono", "that (pre-noun)", "Pre-noun", "その本 (sono hon)", "that book"],
+      ["そ (So-row)", "そば", "そば", "soba", "near, beside; buckwheat noodles", "Noun", "駅のそば (eki no soba)", "near the station"],
+      ["そ (So-row)", "空", "そら", "sora", "sky", "Noun", "青い空 (aoi sora)", "blue sky"],
+      ["そ (So-row)", "それ", "それ", "sore", "that one", "Pronoun", "それは何ですか (sore wa nan desu ka)", "what is that?"],
+      ["そ (So-row)", "それから", "それから", "sorekara", "after that, and then", "Conjunction", "それからどうしましたか (sorekara dou shimashita ka)", "what did you do after that?"],
+      ["そ (So-row)", "それでは", "それでは", "soredewa", "well then, in that case", "Expression", "それでは始めましょう (soredewa hajimemashou)", "well then, let's begin"],
+
+      // ===================== た (TA-ROW) =====================
+      ["た (Ta-row)", "大学", "だいがく", "daigaku", "university, college", "Noun", "大学で勉強する (daigaku de benkyou suru)", "to study at a university"],
+      ["た (Ta-row)", "大使館", "たいしかん", "taishikan", "embassy", "Noun", "日本の大使館 (nihon no taishikan)", "Japanese embassy"],
+      ["た (Ta-row)", "大丈夫", "だいじょうぶ", "daijoubu", "all right, okay, safe", "na-Adjective", "大丈夫ですか (daijoubu desu ka)", "are you okay?"],
+      ["た (Ta-row)", "大好き", "だいすき", "daisuki", "very fond of, love", "na-Adjective", "日本料理が大好き (nihon ryouri ga daisuki)", "I love Japanese food"],
+      ["た (Ta-row)", "大切", "たいせつ", "taisetsu", "important, precious", "na-Adjective", "大切な友だち (taisetsu na tomodachi)", "an important friend"],
+      ["た (Ta-row)", "台所", "だいどころ", "daidokoro", "kitchen", "Noun", "広い台所 (hiroi daidokoro)", "spacious kitchen"],
+      ["た (Ta-row)", "たいへん", "たいへん", "taihen", "very; difficult, tough", "na-Adjective", "今日はたいへん暑い (kyou wa taihen atsui)", "it is very hot today"],
+      ["た (Ta-row)", "高い", "たかい", "takai", "high, tall; expensive", "i-Adjective", "高い山 / 高い車 (takai yama / takai kuruma)", "high mountain / expensive car"],
+      ["た (Ta-row)", "たくさん", "たくさん", "takusan", "many, much, a lot", "Adverb", "本がたくさんある (hon ga takusan aru)", "there are many books"],
+      ["た (Ta-row)", "タクシー", "タクシー", "takushii", "taxi", "Noun", "タクシーを呼ぶ (takushii o yobu)", "to call a taxi"],
+      ["た (Ta-row)", "出す", "だす", "dasu", "to take out; to send (a letter)", "Verb", "手紙を出す (tegami o dasu)", "to mail a letter"],
+      ["た (Ta-row)", "立つ", "たつ", "tatsu", "to stand", "Verb", "席を立つ (seki o tatsu)", "to stand up from one's seat"],
+      ["た (Ta-row)", "建物", "たてもの", "tatemono", "building", "Noun", "白い建物 (shiroi tatemono)", "white building"],
+      ["た (Ta-row)", "楽しい", "たのしい", "tanoshii", "fun, enjoyable", "i-Adjective", "楽しい旅行 (tanoshii ryokou)", "fun trip"],
+      ["た (Ta-row)", "頼む", "たのむ", "tanomu", "to request, to ask; to order", "Verb", "コーヒーを頼む (koohii o tanomu)", "to order coffee"],
+      ["た (Ta-row)", "たばこ", "たばこ", "tabako", "tobacco, cigarette", "Noun", "たばこを吸う (tabako o suu)", "to smoke a cigarette"],
+      ["た (Ta-row)", "たぶん", "たぶん", "tabun", "probably, maybe", "Adverb", "たぶん雨が降るでしょう (tabun ame ga furu deshou)", "it will probably rain"],
+      ["た (Ta-row)", "食べ物", "たべもの", "tabemono", "food", "Noun", "甘い食べ物 (amai tabemono)", "sweet food"],
+      ["た (Ta-row)", "食べる", "たべる", "taberu", "to eat", "Verb", "昼ご飯を食べる (hirugohan o taberu)", "to eat lunch"],
+      ["た (Ta-row)", "卵", "たまご", "tamago", "egg", "Noun", "卵を割る (tamago o waru)", "to crack an egg"],
+      ["た (Ta-row)", "誰", "だれ", "dare", "who", "Pronoun", "あの人は誰ですか (ano hito wa dare desu ka)", "who is that person?"],
+      ["た (Ta-row)", "誕生日", "たんじょうび", "tanjoubi", "birthday", "Noun", "誕生日おめでとう (tanjoubi omedetou)", "happy birthday"],
+      ["た (Ta-row)", "だんだん", "だんだん", "dandan", "gradually, little by little", "Adverb", "だんだん暖かくなる (dandan atatakaku naru)", "it gradually gets warmer"],
+
+      // ===================== ち (CHI-ROW) =====================
+      ["ち (Chi-row)", "小さい", "ちいさい", "chiisai", "small, little", "i-Adjective", "小さい町 (chiisai machi)", "small town"],
+      ["ち (Chi-row)", "小さな", "ちいさな", "chiisana", "small, little (pre-noun)", "Pre-noun", "小さな島 (chiisana shima)", "a small island"],
+      ["ち (Chi-row)", "近い", "ちかい", "chikai", "near, close", "i-Adjective", "駅から近い (eki kara chikai)", "close to the station"],
+      ["ち (Chi-row)", "違う", "ちがう", "chigau", "to differ, to be wrong", "Verb", "いいえ、違います (iie, chigaimasu)", "no, that's incorrect"],
+      ["ち (Chi-row)", "近く", "ちかく", "chikaku", "nearby, neighborhood", "Noun", "家の近く (ie no chikaku)", "near the house"],
+      ["ち (Chi-row)", "地下鉄", "ちかてつ", "chikatetsu", "subway, underground train", "Noun", "地下鉄で通う (chikatetsu de kayou)", "to commute by subway"],
+      ["ち (Chi-row)", "地図", "ちず", "chizu", "map", "Noun", "地図を見る (chizu o miru)", "to look at a map"],
+      ["ち (Chi-row)", "父", "ちち", "chichi", "(my) father", "Noun", "父は会社員です (chichi wa kaishain desu)", "my father is an office worker"],
+      ["ち (Chi-row)", "茶色", "ちゃいろ", "chairo", "brown", "Noun", "茶色の靴 (chairo no kutsu)", "brown shoes"],
+      ["ち (Chi-row)", "茶碗", "ちゃわん", "chawan", "rice bowl; teacup", "Noun", "ご飯の茶碗 (gohan no chawan)", "rice bowl"],
+      ["ち (Chi-row)", "ちょうど", "ちょうど", "choudo", "just, exactly", "Adverb", "ちょうど三時です (choudo sanji desu)", "it isero exactly 3 o'clock"],
+      ["ち (Chi-row)", "ちょっと", "ちょっと", "chotto", "a little, a moment", "Adverb", "ちょっと待ってください (chotto matte kudasai)", "please wait a moment"],
+
+      // ===================== つ (TSU-ROW) =====================
+      ["つ (Tsu-row)", "一日", "ついたち", "tsuitachi", "first day of the month", "Noun", "四月一日 (shigatsu tsuitachi)", "April 1st"],
+      ["つ (Tsu-row)", "使う", "つかう", "tsukau", "to use", "Verb", "パソコンを使う (pasokon o tsukau)", "to use a computer"],
+      ["つ (Tsu-row)", "疲れる", "つかれる", "tsukareru", "to get tired", "Verb", "仕事で疲れる (shigoto de tsukareru)", "to get tired from work"],
+      ["つ (Tsu-row)", "次", "つぎ", "tsugi", "next", "Noun", "次の駅 (tsugi no eki)", "the next station"],
+      ["つ (Tsu-row)", "着く", "つく", "tsuku", "to arrive", "Verb", "空港に着く (kuukou ni tsuku)", "to arrive at the airport"],
+      ["つ (Tsu-row)", "机", "つくえ", "tsukue", "desk", "Noun", "机の上 (tsukue no ue)", "on the desk"],
+      ["つ (Tsu-row)", "作る", "つくる", "tsukuru", "to make, to create, to cook", "Verb", "晩ご飯を作る (bangohan o tsukuru)", "to cook dinner"],
+      ["つ (Tsu-row)", "つける", "つける", "tsukeru", "to turn on (light/power); to attach", "Verb", "電気をつける (denki o tsukeru)", "to turn on the light"],
+      ["つ (Tsu-row)", "勤める", "つとめる", "tsutomeru", "to work for (a company/bank)", "Verb", "銀行に勤める (ginkou ni tsutomeru)", "to work at a bank"],
+      ["つ (Tsu-row)", "つまらない", "つまらない", "tsumaranai", "boring, dull", "i-Adjective", "つまらない映画 (tsumaranai eiga)", "boring movie"],
+      ["つ (Tsu-row)", "冷たい", "つめたい", "tsumetai", "cold (to the touch)", "i-Adjective", "冷たい水 (tsumetai mizu)", "cold water"],
+      ["つ (Tsu-row)", "強い", "つよい", "tsuyoi", "strong", "i-Adjective", "強い風 (tsuyoi kaze)", "strong wind"],
+
+      // ===================== て (TE-ROW) =====================
+      ["て (Te-row)", "手", "て", "te", "hand", "Noun", "手を洗う (te o arau)", "to wash one's hands"],
+      ["て (Te-row)", "テープ", "テープ", "teepu", "tape", "Noun", "テープを聞く (teepu o kiku)", "to listen to a tape"],
+      ["て (Te-row)", "テーブル", "テーブル", "teeburu", "table", "Noun", "丸いテーブル (marui teeburu)", "round table"],
+      ["て (Te-row)", "出かける", "でかける", "dekakeru", "to go out", "Verb", "買い物に出かける (kaimono ni dekakeru)", "to go out shopping"],
+      ["て (Te-row)", "手紙", "てがみ", "tegami", "letter", "Noun", "友だちに手紙を書く (tomodachi ni tegami o kaku)", "to write a letter to a friend"],
+      ["て (Te-row)", "できる", "できる", "dekiru", "to be able to do; to be completed", "Verb", "日本語ができる (nihongo ga dekiru)", "can speak Japanese"],
+      ["て (Te-row)", "出口", "でぐち", "deguchi", "exit", "Noun", "駅の出口 (eki no deguchi)", "station exit"],
+      ["て (Te-row)", "テスト", "テスト", "tesuto", "test, exam", "Noun", "漢字のテスト (kanji no tesuto)", "kanji test"],
+      ["て (Te-row)", "では", "では", "dewa", "well then", "Expression", "では、始めましょう (dewa, hajimemashou)", "well then, let's start"],
+      ["て (Te-row)", "デパート", "デパート", "depaato", "department store", "Noun", "デパートで買い物する (depaato de kaimono suru)", "to shop at a department store"],
+      ["て (Te-row)", "でも", "でも", "demo", "but, however", "Conjunction", "眠いです。でも勉強します。", "I'm sleepy. But I will study."],
+      ["て (Te-row)", "出る", "でる", "deru", "to go out, to leave; to attend", "Verb", "家を出る (ie o deru)", "to leave the house"],
+      ["て (Te-row)", "テレビ", "テレビ", "terebi", "television, TV", "Noun", "テレビを見る (terebi o miru)", "to watch TV"],
+      ["て (Te-row)", "天気", "てんき", "tenki", "weather", "Noun", "明日の天気 (ashita no tenki)", "tomorrow's weather"],
+      ["て (Te-row)", "電気", "でんき", "denki", "electricity; electric light", "Noun", "電気を消す (denki o kesu)", "to turn off the light"],
+      ["て (Te-row)", "電車", "でんしゃ", "densha", "electric train", "Noun", "電車に乗る (densha ni noru)", "to take the train"],
+      ["て (Te-row)", "電話", "でんわ", "denwa", "telephone, phone call", "Noun", "電話をかける (denwa o kakeru)", "to make a phone call"],
+
+      // ===================== と (TO-ROW) =====================
+      ["と (To-row)", "戸", "と", "to", "door (Japanese style)", "Noun", "戸を閉める (to o shimeru)", "to close the door"],
+      ["と (To-row)", "ドア", "ドア", "doa", "door (Western style)", "Noun", "ドアを開ける (doa o akeru)", "to open the door"],
+      ["と (To-row)", "トイレ", "トイレ", "toire", "toilet, restroom", "Noun", "トイレはどこですか (toire wa doko desu ka)", "where is the bathroom?"],
+      ["と (To-row)", "どう", "どう", "dou", "how, in what way", "Adverb", "新しい仕事はどうですか (atarashii shigoto wa dou desu ka)", "how is your new job?"],
+      ["と (To-row)", "どうして", "どうして", "doushite", "why", "Adverb", "どうして来ませんでしたか (doushite kimasen deshita ka)", "why didn't you come?"],
+      ["と (To-row)", "どうぞ", "どうぞ", "douzo", "please, here you go", "Adverb", "どうぞお入りください (douzo ohairi kudasai)", "please come in"],
+      ["と (To-row)", "動物", "どうぶつ", "doubutsu", "animal", "Noun", "動物が好き (doubutsu ga suki)", "fond of animals"],
+      ["と (To-row)", "どうも", "どうも", "doumo", "thanks; very much", "Adverb", "どうもありがとう (doumo arigatou)", "thank you very much"],
+      ["と (To-row)", "十", "とお", "too", "ten (things)", "Noun", "りんごが十ある (ringo ga too aru)", "there are ten apples"],
+      ["と (To-row)", "遠い", "とおい", "tooi", "far, distant", "i-Adjective", "駅が遠い (eki ga tooi)", "the station is far"],
+      ["と (To-row)", "十日", "とおか", "tooka", "tenth day of the month; 10 days", "Noun", "十月十日 (juugatsu tooka)", "October 10th"],
+      ["と (To-row)", "時々", "ときどき", "tokidoki", "sometimes", "Adverb", "時々映画を見る (tokidoki eiga o miru)", "I sometimes watch movies"],
+      ["と (To-row)", "時計", "とけい", "tokei", "watch, clock", "Noun", "腕時計を見る (udetokei o miru)", "to look at one's wristwatch"],
+      ["と (To-row)", "どこ", "どこ", "doko", "where", "Pronoun", "駅はどこですか (eki wa doko desu ka)", "where is the station?"],
+      ["と (To-row)", "所", "ところ", "tokoro", "place", "Noun", "静かな所 (shizuka na tokoro)", "a quiet place"],
+      ["と (To-row)", "図書館", "としょかん", "toshokan", "library", "Noun", "図書館で本を借りる (toshokan de hon o kariru)", "to borrow books at the library"],
+      ["と (To-row)", "どちら", "どちら", "dochira", "which (of two); where (polite)", "Pronoun", "どちらがいいですか (dochira ga ii desu ka)", "which one do you prefer?"],
+      ["と (To-row)", "とても", "とても", "totemo", "very, exceedingly", "Adverb", "とてもおいしい (totemo oishii)", "very delicious"],
+      ["と (To-row)", "どなた", "どなた", "donata", "who (polite)", "Pronoun", "あの方はどなたですか (ano kata wa donata desu ka)", "who is that person?"],
+      ["と (To-row)", "隣", "となり", "tonari", "next to, next door", "Noun", "隣の部屋 (tonari no heya)", "the room next door"],
+      ["と (To-row)", "どの", "どの", "dono", "which (pre-noun)", "Pre-noun", "どの本ですか (dono hon desu ka)", "which book is it?"],
+      ["と (To-row)", "飛ぶ", "とぶ", "tobu", "to fly; to jump", "Verb", "鳥が飛ぶ (tori ga tobu)", "a bird flies"],
+      ["と (To-row)", "止まる", "とまる", "tomaru", "to stop, to halt", "Verb", "バスが止まる (basu ga tomaru)", "the bus stops"],
+      ["と (To-row)", "友だち", "ともだち", "tomodachi", "friend", "Noun", "大切な友だち (taisetsu na tomodachi)", "a dear friend"],
+      ["と (To-row)", "土曜日", "どようび", "doyoubi", "Saturday", "Noun", "土曜日の夜 (doyoubi no yoru)", "Saturday night"],
+      ["と (To-row)", "鳥", "とり", "tori", "bird", "Noun", "青い鳥 (aoi tori)", "blue bird"],
+      ["と (To-row)", "鶏肉", "とりにく", "toriniku", "chicken meat", "Noun", "鶏肉の料理 (toriniku no ryouri)", "chicken dish"],
+      ["と (To-row)", "取る", "とる", "toru", "to take, to pass", "Verb", "塩を取ってください (shio o totte kudasai)", "please pass the salt"],
+      ["と (To-row)", "撮る", "とる", "toru", "to take (a photo / video)", "Verb", "写真を撮る (shashin o toru)", "to take a photo"],
+      ["と (To-row)", "どれ", "どれ", "dore", "which one (of three or more)", "Pronoun", "あなたのかばんはどれですか (anata no kaban wa dore desu ka)", "which one is your bag?"],
+      ["と (To-row)", "どんな", "どんな", "donna", "what kind of", "Pre-noun", "どんな音楽が好きですか (donna ongaku ga suki desu ka)", "what kind of music do you like?"],
+
+      // ===================== な (NA-ROW) =====================
+      ["な (Na-row)", "ナイフ", "ナイフ", "naifu", "knife", "Noun", "ナイフとフォーク (naifu to fooku)", "knife and fork"],
+      ["な (Na-row)", "中", "なか", "naka", "inside, middle", "Noun", "箱の中 (hako no naka)", "inside the box"],
+      ["な (Na-row)", "長い", "ながい", "nagai", "long", "i-Adjective", "長い髪 (nagai kami)", "long hair"],
+      ["な (Na-row)", "鳴く", "なく", "naku", "to sing, to meow, to bark (animals)", "Verb", "鳥が鳴く (tori ga naku)", "birds sing"],
+      ["な (Na-row)", "無くす", "なくす", "nakusu", "to lose (something)", "Verb", "鍵を無くす (kagi o nakusu)", "to lose one's key"],
+      ["な (Na-row)", "なぜ", "なぜ", "naze", "why", "Adverb", "なぜですか (naze desu ka)", "why is that?"],
+      ["な (Na-row)", "夏", "なつ", "natsu", "summer", "Noun", "日本の夏 (nihon no natsu)", "summer in Japan"],
+      ["な (Na-row)", "夏休み", "なつやすみ", "natsuyasumi", "summer vacation", "Noun", "長い夏休み (nagai natsuyasumi)", "long summer vacation"],
+      ["な (Na-row)", "など", "など", "nado", "et cetera, and so on", "Particle", "ペンやノートなど (pen ya nooto nado)", "pens, notebooks, etc."],
+      ["な (Na-row)", "七つ", "ななつ", "nanatsu", "seven (things)", "Noun", "七つあります (nanatsu arimasu)", "there are seven"],
+      ["な (Na-row)", "何", "なに / なん", "nani / nan", "what", "Pronoun", "何を食べますか (nani o tabemasu ka)", "what will you eat?"],
+      ["な (Na-row)", "七日", "なのか", "nanoka", "seventh day of the month; 7 days", "Noun", "七月七日 (shichigatsu nanoka)", "July 7th"],
+      ["な (Na-row)", "名前", "なまえ", "namae", "name", "Noun", "お名前は何ですか (onamae wa nan desu ka)", "what is your name?"],
+      ["な (Na-row)", "習う", "ならう", "narau", "to learn (from someone)", "Verb", "ピアノを習う (piano o narau)", "to take piano lessons"],
+      ["な (Na-row)", "並ぶ", "ならぶ", "narabu", "to line up, to stand in a line", "Verb", "店の前に並ぶ (mise no mae ni narabu)", "to line up in front of a store"],
+      ["な (Na-row)", "並べる", "ならべる", "naraberu", "to line up, to arrange (things)", "Verb", "お皿を並べる (osara o naraberu)", "to set/arrange the plates"],
+      ["な (Na-row)", "なる", "なる", "naru", "to become", "Verb", "医者になる (isha ni naru)", "to become a doctor"],
+
+      // ===================== に (NI-ROW) =====================
+      ["に (Ni-row)", "にぎやか", "にぎやか", "nigiyaka", "lively, bustling", "na-Adjective", "にぎやかな町 (nigiyaka na machi)", "lively town"],
+      ["に (Ni-row)", "肉", "にく", "niku", "meat", "Noun", "肉と野菜 (niku to yasai)", "meat and vegetables"],
+      ["に (Ni-row)", "西", "にし", "nishi", "west", "Noun", "西の空 (nishi no sora)", "western sky"],
+      ["に (Ni-row)", "日曜日", "にちようび", "nichiyoubi", "Sunday", "Noun", "日曜日は休みです (nichiyoubi wa yasumi desu)", "Sunday is a day off"],
+      ["に (Ni-row)", "荷物", "にもつ", "nimotsu", "luggage, baggage, parcel", "Noun", "荷物を持つ (nimotsu o motsu)", "to carry luggage"],
+      ["に (Ni-row)", "ニュース", "ニュース", "nyuusu", "news", "Noun", "テレビのニュース (terebi no nyuusu)", "TV news"],
+      ["に (Ni-row)", "庭", "にわ", "niwa", "garden, yard", "Noun", "広い庭 (hiroi niwa)", "spacious garden"],
+
+      // ===================== ぬ (NU-ROW) =====================
+      ["ぬ (Nu-row)", "脱ぐ", "ぬぐ", "nugu", "to take off (clothes/shoes)", "Verb", "靴を脱ぐ (kutsu o nugu)", "to take off shoes"],
+      ["ぬ (Nu-row)", "温い", "ぬるい", "nurui", "lukewarm, tepid", "i-Adjective", "温いお茶 (nurui ocha)", "lukewarm tea"],
+
+      // ===================== ね (NE-ROW) =====================
+      ["ね (Ne-row)", "ネクタイ", "ネクタイ", "nekutai", "necktie", "Noun", "ネクタイをする (nekutai o suru)", "to wear a necktie"],
+      ["ね (Ne-row)", "猫", "ねこ", "neko", "cat", "Noun", "猫が寝ている (neko ga nete iru)", "the cat is sleeping"],
+      ["ね (Ne-row)", "寝る", "ねる", "neru", "to sleep, to go to bed", "Verb", "十一時に寝る (juuichiji ni neru)", "to go to bed at 11 o'clock"],
+
+      // ===================== の (NO-ROW) =====================
+      ["の (No-row)", "ノート", "ノート", "nooto", "notebook", "Noun", "ノートに書く (nooto ni kaku)", "to write in a notebook"],
+      ["の (No-row)", "登る / 上る", "のぼる", "noboru", "to climb, to go up", "Verb", "山に登る (yama ni noboru)", "to climb a mountain"],
+      ["の (No-row)", "飲み物", "のみもの", "nomimono", "drink, beverage", "Noun", "冷たい飲み物 (tsumetai nomimono)", "cold drink"],
+      ["の (No-row)", "飲む", "のむ", "nomu", "to drink", "Verb", "水を飲む (mizu o nomu)", "to drink water"],
+      ["の (No-row)", "乗る", "のる", "noru", "to ride, to board, to get on", "Verb", "バスに乗る (basu ni noru)", "to get on a bus"],
+
+      // ===================== は (HA-ROW) =====================
+      ["は (Ha-row)", "歯", "は", "ha", "tooth, teeth", "Noun", "歯を磨く (ha o migaku)", "to brush one's teeth"],
+      ["は (Ha-row)", "パーティー", "パーティー", "paatii", "party", "Noun", "誕生日のパーティー (tanjoubi no paatii)", "birthday party"],
+      ["は (Ha-row)", "はい", "はい", "hai", "yes", "Expression", "はい、わかりました (hai, wakarimashita)", "yes, I understood"],
+      ["は (Ha-row)", "灰皿", "はいざら", "haizara", "ashtray", "Noun", "テーブルの灰皿 (teeburu no haizara)", "ashtray on the table"],
+      ["は (Ha-row)", "入る", "はいる", "hairu", "to enter, to go in", "Verb", "部屋に入る (heya ni hairu)", "to enter a room"],
+      ["は (Ha-row)", "葉書", "はがき", "hagaki", "postcard", "Noun", "葉書を出す (hagaki o dasu)", "to send a postcard"],
+      ["は (Ha-row)", "履く", "はく", "haku", "to put on, to wear (lower body/shoes)", "Verb", "靴を履く (kutsu o haku)", "to put on shoes"],
+      ["は (Ha-row)", "箱", "はこ", "hako", "box", "Noun", "大きい箱 (ookii hako)", "big box"],
+      ["は (Ha-row)", "橋", "はし", "hashi", "bridge", "Noun", "橋を渡る (hashi o wataru)", "to cross a bridge"],
+      ["は (Ha-row)", "箸", "はし", "hashi", "chopsticks", "Noun", "箸で食べる (hashi de taberu)", "to eat with chopsticks"],
+      ["は (Ha-row)", "始まる", "はじまる", "hajimaru", "to begin, to start (intransitive)", "Verb", "映画が始まる (eiga ga hajimaru)", "the movie starts"],
+      ["は (Ha-row)", "初め / 始め", "はじめ", "hajime", "beginning, start", "Noun", "五月の初め (gogatsu no hajime)", "the beginning of May"],
+      ["は (Ha-row)", "初めて", "はじめて", "hajimete", "for the first time", "Adverb", "初めて日本へ来ました (hajimete nihon e kimashita)", "I came to Japan for the first time"],
+      ["は (Ha-row)", "走る", "はしる", "hashiru", "to run", "Verb", "公園を走る (kouen o hashiru)", "to run in the park"],
+      ["は (Ha-row)", "バス", "バス", "basu", "bus", "Noun", "バスを待つ (basu o matsu)", "to wait for the bus"],
+      ["は (Ha-row)", "バター", "バター", "bataa", "butter", "Noun", "パンにバターを塗る (pan ni bataa o nuru)", "to spread butter on bread"],
+      ["は (Ha-row)", "二十歳", "はたち", "hatachi", "20 years old", "Noun", "今年二十歳になります (kotoshi hatachi ni narimasu)", "I turn 20 this year"],
+      ["は (Ha-row)", "働く", "はたらく", "hataraku", "to work", "Verb", "会社で働く (kaisha de hataraku)", "to work at a company"],
+      ["は (Ha-row)", "八", "はち", "hachi", "eight", "Noun", "八時 (hachiji)", "8 o'clock"],
+      ["は (Ha-row)", "二十日", "はつか", "hatsuka", "twentieth day of the month; 20 days", "Noun", "一月二十日 (ichigatsu hatsuka)", "January 20th"],
+      ["は (Ha-row)", "花", "はな", "hana", "flower", "Noun", "きれいな花 (kirei na hana)", "beautiful flower"],
+      ["は (Ha-row)", "鼻", "はな", "hana", "nose", "Noun", "鼻が高い (hana ga takai)", "having a high nose; proud"],
+      ["は (Ha-row)", "話", "はなし", "hanashi", "talk, story, conversation", "Noun", "面白い話 (omoshiroi hanashi)", "interesting story"],
+      ["は (Ha-row)", "話す", "はなす", "hanasu", "to speak, to talk", "Verb", "友だちと話す (tomodachi to hanasu)", "to talk with a friend"],
+      ["は (Ha-row)", "母", "はは", "haha", "(my) mother", "Noun", "母の料理 (haha no ryouri)", "my mother's cooking"],
+      ["は (Ha-row)", "早い", "はやい", "hayai", "early", "i-Adjective", "朝早く起きる (asa hayaku okiru)", "to wake up early in the morning"],
+      ["は (Ha-row)", "速い", "はやい", "hayai", "fast, quick", "i-Adjective", "新幹線は速い (shinkansen wa hayai)", "the bullet train is fast"],
+      ["は (Ha-row)", "春", "はる", "haru", "spring", "Noun", "春が来る (haru ga kuru)", "spring comes"],
+      ["は (Ha-row)", "貼る", "はる", "haru", "to stick, to paste, to post", "Verb", "切手を貼る (kitte o haru)", "to stick on a stamp"],
+      ["は (Ha-row)", "晴れ", "はれ", "hare", "clear weather, sunny", "Noun", "明日は晴れです (ashita wa hare desu)", "tomorrow will be sunny"],
+      ["は (Ha-row)", "晴れる", "はれる", "hareru", "to clear up, to be sunny", "Verb", "空が晴れる (sora ga hareru)", "the sky clears up"],
+      ["は (Ha-row)", "半", "はん", "han", "half", "Noun", "九時半 (kujihan)", "9:30 (half past nine)"],
+      ["は (Ha-row)", "晩", "ばん", "ban", "evening, night", "Noun", "今日の晩 (kyou no ban)", "this evening"],
+      ["は (Ha-row)", "パン", "パン", "pan", "bread", "Noun", "朝はパンを食べる (asa wa pan o taberu)", "I eat bread in the morning"],
+      ["は (Ha-row)", "ハンカチ", "ハンカチ", "hankachi", "handkerchief", "Noun", "きれいなハンカチ (kirei na hankachi)", "clean handkerchief"],
+      ["は (Ha-row)", "番号", "ばんごう", "bangou", "number", "Noun", "電話番号 (denwa bangou)", "telephone number"],
+      ["は (Ha-row)", "晩ご飯", "ばんごはん", "bangohan", "dinner, evening meal", "Noun", "晩ご飯を食べる (bangohan o taberu)", "to eat dinner"],
+      ["は (Ha-row)", "半分", "はんぶん", "hanbun", "half", "Noun", "半分に分ける (hanbun ni wakeru)", "to divide in half"],
+
+      // ===================== ひ (HI-ROW) =====================
+      ["ひ (Hi-row)", "東", "ひがし", "higashi", "east", "Noun", "駅の東口 (eki no higashiguchi)", "east exit of the station"],
+      ["ひ (Hi-row)", "引く", "ひく", "hiku", "to pull; to subtract; to look up", "Verb", "ドアを引く (doa o hiku)", "to pull the door"],
+      ["ひ (Hi-row)", "弾く", "ひく", "hiku", "to play (a stringed/keyboard instrument)", "Verb", "ピアノを弾く (piano o hiku)", "to play the piano"],
+      ["ひ (Hi-row)", "低い", "ひくい", "hikui", "low, short (height)", "i-Adjective", "低い山 (hikui yama)", "low mountain"],
+      ["ひ (Hi-row)", "飛行機", "ひこうき", "hikouki", "airplane", "Noun", "飛行機に乗る (hikouki ni noru)", "to board an airplane"],
+      ["ひ (Hi-row)", "左", "ひだり", "hidari", "left", "Noun", "左へ曲がる (hidari e magaru)", "to turn left"],
+      ["ひ (Hi-row)", "人", "ひと", "hito", "person, people", "Noun", "優しい人 (yasashii hito)", "kind person"],
+      ["ひ (Hi-row)", "一つ", "ひとつ", "hitotsu", "one (thing)", "Noun", "これを一つください (kore o hitotsu kudasai)", "one of these, please"],
+      ["ひ (Hi-row)", "一月", "ひとつき", "hitotsuki", "one month", "Noun", "一月休む (hitotsuki yasumu)", "to take a month off"],
+      ["ひ (Hi-row)", "一人", "ひとり", "hitori", "one person; alone", "Noun", "一人で行く (hitori de iku)", "to go alone"],
+      ["ひ (Hi-row)", "暇", "ひま", "hima", "free time, leisure, not busy", "na-Adjective", "週末は暇です (shuumatsu wa hima desu)", "I am free on the weekend"],
+      ["ひ (Hi-row)", "百", "ひゃく", "hyaku", "hundred", "Noun", "百円玉 (hyaku-en dama)", "100-yen coin"],
+      ["ひ (Hi-row)", "病院", "びょういん", "byouin", "hospital, clinic", "Noun", "病院へ行く (byouin e iku)", "to go to the hospital"],
+      ["ひ (Hi-row)", "病気", "びょうき", "byouki", "illness, sickness", "Noun", "病気が治る (byouki ga naoru)", "to recover from an illness"],
+      ["ひ (Hi-row)", "平仮名", "ひらがな", "hiragana", "Hiragana syllabary", "Noun", "ひらがなを覚える (hiragana o oboeru)", "to learn Hiragana"],
+      ["ひ (Hi-row)", "昼", "ひる", "hiru", "noon, daytime", "Noun", "昼のニュース (hiru no nyuusu)", "noon news"],
+      ["ひ (Hi-row)", "昼ご飯", "ひるごはん", "hirugohan", "lunch", "Noun", "昼ご飯の時間 (hirugohan no jikan)", "lunchtime"],
+      ["ひ (Hi-row)", "広い", "ひろい", "hiroi", "spacious, wide", "i-Adjective", "広い部屋 (hiroi heya)", "spacious room"],
+
+      // ===================== ふ (FU-ROW) =====================
+      ["ふ (Fu-row)", "フィルム", "フィルム", "firumu", "film", "Noun", "カメラのフィルム (kamera no firumu)", "camera film"],
+      ["ふ (Fu-row)", "封筒", "ふうとう", "fuutou", "envelope", "Noun", "封筒に入れる (fuutou ni ireru)", "to put in an envelope"],
+      ["ふ (Fu-row)", "プール", "プール", "puuru", "swimming pool", "Noun", "プールで泳ぐ (puuru de oyogu)", "to swim in a pool"],
+      ["ふ (Fu-row)", "フォーク", "フォーク", "fooku", "fork", "Noun", "フォークを使う (fooku o tsukau)", "to use a fork"],
+      ["ふ (Fu-row)", "吹く", "ふく", "fuku", "to blow (wind)", "Verb", "風が吹く (kaze ga fuku)", "the wind blows"],
+      ["ふ (Fu-row)", "服", "ふく", "fuku", "clothes", "Noun", "新しい服を買う (atarashii fuku o kau)", "to buy new clothes"],
+      ["ふ (Fu-row)", "二つ", "ふたつ", "futatsu", "two (things)", "Noun", "りんごを二つ食べる (ringo o futatsu taberu)", "to eat two apples"],
+      ["ふ (Fu-row)", "豚肉", "ぶたにく", "butaniku", "pork", "Noun", "豚肉のカレー (butaniku no karee)", "pork curry"],
+      ["ふ (Fu-row)", "二人", "ふたり", "futari", "two people", "Noun", "二人で話す (futari de hanasu)", "to talk together (two people)"],
+      ["ふ (Fu-row)", "二日", "ふつか", "futsuka", "second day of the month; 2 days", "Noun", "二月二日 (nigatsu futsuka)", "February 2nd"],
+      ["ふ (Fu-row)", "太い", "ふとい", "futoi", "thick, fat", "i-Adjective", "太いペン (futoi pen)", "thick pen"],
+      ["ふ (Fu-row)", "冬", "ふゆ", "fuyu", "winter", "Noun", "寒い冬 (samui fuyu)", "cold winter"],
+      ["ふ (Fu-row)", "降る", "ふる", "furu", "to fall (rain, snow)", "Verb", "雨が降る (ame ga furu)", "it rains"],
+      ["ふ (Fu-row)", "古い", "ふるい", "furui", "old (not for people)", "i-Adjective", "古いお寺 (furui otera)", "old temple"],
+      ["ふ (Fu-row)", "ふろ", "ふろ", "furo", "bath", "Noun", "おふろに入る (ofuro ni hairu)", "to take a bath"],
+      ["ふ (Fu-row)", "文章", "ぶんしょう", "bunshou", "sentence, text", "Noun", "短い文章 (mijikai bunshou)", "short sentence"],
+
+      // ===================== へ (HE-ROW) =====================
+      ["へ (He-row)", "ページ", "ページ", "peeji", "page", "Noun", "十ページを開く (juppeeji o hiraku)", "to open to page 10"],
+      ["へ (He-row)", "下手", "へた", "heta", "unskillful, poor at", "na-Adjective", "歌が下手です (uta ga heta desu)", "I am poor at singing"],
+      ["へ (He-row)", "ベッド", "ベッド", "beddo", "bed", "Noun", "ベッドで寝る (beddo de neru)", "to sleep in a bed"],
+      ["へ (He-row)", "ペット", "ペット", "petto", "pet", "Noun", "ペットを飼う (petto o kau)", "to keep a pet"],
+      ["へ (He-row)", "部屋", "へや", "heya", "room", "Noun", "私の部屋 (watashi no heya)", "my room"],
+      ["へ (He-row)", "辺", "へん", "hen", "area, vicinity", "Noun", "この辺は静かです (kono hen wa shizuka desu)", "this area is quiet"],
+      ["へ (He-row)", "ペン", "ペン", "pen", "pen", "Noun", "黒いペン (kuroi pen)", "black pen"],
+      ["へ (He-row)", "勉強", "べんきょう", "benkyou", "study", "Noun", "毎日日本語を勉強する (mainichi nihongo o benkyou suru)", "to study Japanese every day"],
+      ["へ (He-row)", "便利", "べんり", "benri", "convenient, handy", "na-Adjective", "便利な場所 (benri na basho)", "convenient location"],
+
+      // ===================== ほ (HO-ROW) =====================
+      ["ほ (Ho-row)", "帽子", "ぼうし", "boushi", "hat, cap", "Noun", "帽子をかぶる (boushi o kaburu)", "to wear a hat"],
+      ["ほ (Ho-row)", "ボールペン", "ボールペン", "boorupen", "ballpoint pen", "Noun", "ボールペンで書く (boorupen de kaku)", "to write with a ballpoint pen"],
+      ["ほ (Ho-row)", "外 / 他", "ほか", "hoka", "other, another, the rest", "Noun", "ほかの人 (hoka no hito)", "other people"],
+      ["ほ (Ho-row)", "ポケット", "ポケット", "poketto", "pocket", "Noun", "ポケットに入れる (poketto ni ireru)", "to put in one's pocket"],
+      ["ほ (Ho-row)", "欲しい", "ほしい", "hoshii", "wanted, desired", "i-Adjective", "新しいパソコンが欲しい (atarashii pasokon ga hoshii)", "I want a new computer"],
+      ["ほ (Ho-row)", "ポスト", "ポスト", "posuto", "mailbox, postbox", "Noun", "ポストに手紙を入れる (posuto ni tegami o ireru)", "to put a letter in the mailbox"],
+      ["ほ (Ho-row)", "細い", "ほそい", "hosoi", "thin, slender, fine", "i-Adjective", "細い道 (hosoi michi)", "narrow/thin road"],
+      ["ほ (Ho-row)", "ボタン", "ボタン", "botan", "button", "Noun", "ボタンを押す (botan o osu)", "to press a button"],
+      ["ほ (Ho-row)", "ホテル", "ホテル", "hoteru", "hotel", "Noun", "ホテルに泊まる (hoteru ni tomaru)", "to stay at a hotel"],
+      ["ほ (Ho-row)", "本", "ほん", "hon", "book", "Noun", "本を読む (hon o yomu)", "to read a book"],
+      ["ほ (Ho-row)", "本棚", "ほんだな", "hondana", "bookshelf", "Noun", "本棚に並べる (hondana ni naraberu)", "to line up on the bookshelf"],
+      ["ほ (Ho-row)", "本当", "ほんとう", "hontou", "truth, reality", "Noun", "本当ですか (hontou desu ka)", "really? / is that true?"],
+
+      // ===================== ま (MA-ROW) =====================
+      ["ま (Ma-row)", "毎朝", "まいあさ", "maiasa", "every morning", "Noun", "毎朝コーヒーを飲む (maiasa koohii o nomu)", "to drink coffee every morning"],
+      ["ま (Ma-row)", "毎月", "まいつき / まいげつ", "maitsuki / maigetsu", "every month", "Noun", "毎月本を買う (maitsuki hon o kau)", "to buy books every month"],
+      ["ま (Ma-row)", "毎週", "まいしゅう", "maishuu", "every week", "Noun", "毎週土曜日 (maishuu doyoubi)", "every Saturday"],
+      ["ま (Ma-row)", "毎日", "まいにち", "mainichi", "every day", "Noun", "毎日運動する (mainichi undou suru)", "to exercise every day"],
+      ["ま (Ma-row)", "毎年", "まいとし / まいねん", "maitoshi / mainen", "every year", "Noun", "毎年旅行に行く (maitoshi ryokou ni iku)", "to go on a trip every year"],
+      ["ま (Ma-row)", "毎晩", "まいばん", "maiban", "every night", "Noun", "毎晩電話する (maiban denwa suru)", "to call every night"],
+      ["ま (Ma-row)", "前", "まえ", "mae", "front, before, ago", "Noun", "駅の前 (eki no mae)", "in front of the station"],
+      ["ま (Ma-row)", "曲がる", "まがる", "magaru", "to turn, to bend", "Verb", "右へ曲がる (migi e magaru)", "to turn right"],
+      ["ま (Ma-row)", "まずい", "まずい", "mazui", "bad-tasting, unappetizing", "i-Adjective", "この料理はまずい (kono ryouri wa mazui)", "this food tastes bad"],
+      ["ま (Ma-row)", "また", "また", "mata", "again, also", "Adverb", "また来週 (mata raishuu)", "see you again next week"],
+      ["ま (Ma-row)", "まだ", "まだ", "mada", "still, not yet", "Adverb", "まだ終わっていません (mada owatte imasen)", "it's not finished yet"],
+      ["ま (Ma-row)", "町", "まち", "machi", "town, city", "Noun", "きれいな町 (kirei na machi)", "pretty town"],
+      ["ま (Ma-row)", "待つ", "まつ", "matsu", "to wait", "Verb", "バスを待つ (basu o matsu)", "to wait for the bus"],
+      ["ま (Ma-row)", "まっすぐ", "まっすぐ", "massugu", "straight ahead", "Adverb", "まっすぐ行く (massugu iku)", "to go straight ahead"],
+      ["ま (Ma-row)", "マッチ", "マッチ", "macchi", "matches", "Noun", "マッチで火をつける (macchi de hi o tsukeru)", "to light a fire with a match"],
+      ["ま (Ma-row)", "窓", "まど", "mado", "window", "Noun", "窓を開ける (mado o akeru)", "to open the window"],
+      ["ま (Ma-row)", "丸い / 円い", "まるい", "marui", "round, circular", "i-Adjective", "丸いテーブル (marui teeburu)", "round table"],
+      ["ま (Ma-row)", "万", "まん", "man", "ten thousand", "Noun", "一万円 (ichiman-en)", "10,000 yen"],
+      ["ま (Ma-row)", "万年筆", "まんねんひつ", "mannenhitsu", "fountain pen", "Noun", "万年筆で手紙を書く (mannenhitsu de tegami o kaku)", "to write a letter with a fountain pen"],
+
+      // ===================== み (MI-ROW) =====================
+      ["み (Mi-row)", "磨く", "みがく", "migaku", "to polish, to brush (teeth)", "Verb", "歯を磨く (ha o migaku)", "to brush one's teeth"],
+      ["み (Mi-row)", "右", "みぎ", "migi", "right (side)", "Noun", "右の手 (migi no te)", "right hand"],
+      ["み (Mi-row)", "短い", "みじかい", "mijikai", "short", "i-Adjective", "短い鉛筆 (mijikai enpitsu)", "short pencil"],
+      ["み (Mi-row)", "水", "みず", "mizu", "water", "Noun", "冷たい水 (tsumetai mizu)", "cold water"],
+      ["み (Mi-row)", "店", "みせ", "mise", "store, shop", "Noun", "本屋の店 (honya no mise)", "bookstore"],
+      ["み (Mi-row)", "見せる", "みせる", "miseru", "to show", "Verb", "パスポートを見せる (pasupooto o miseru)", "to show one's passport"],
+      ["み (Mi-row)", "道", "みち", "michi", "road, street, way", "Noun", "道を教える (michi o oshieru)", "to give directions"],
+      ["み (Mi-row)", "三日", "みっか", "mikka", "third day of the month; 3 days", "Noun", "三月三日 (sangatsu mikka)", "March 3rd"],
+      ["み (Mi-row)", "三つ", "みっつ", "mittsu", "three (things)", "Noun", "三つください (mittsu kudasai)", "three of these, please"],
+      ["み (Mi-row)", "緑", "みどり", "midori", "green; greenery", "Noun", "緑が多い公園 (midori ga ooi kouen)", "a park with lots of greenery"],
+      ["み (Mi-row)", "皆さん", "みなさん", "minasan", "everyone, ladies and gentlemen", "Noun", "皆さん、こんにちは (minasan, konnichiwa)", "hello, everyone"],
+      ["み (Mi-row)", "南", "みなみ", "minami", "south", "Noun", "南の島 (minami no shima)", "southern island"],
+      ["み (Mi-row)", "耳", "みみ", "mimi", "ear", "Noun", "耳が痛い (mimi ga itai)", "my ear hurts"],
+      ["み (Mi-row)", "見る", "みる", "miru", "to see, to look, to watch", "Verb", "映画を見る (eiga o miru)", "to watch a movie"],
+      ["み (Mi-row)", "みんな", "みんな", "minna", "all, everyone, everything", "Pronoun", "みんなで歌う (minna de utau)", "to sing all together"],
+
+      // ===================== む (MU-ROW) =====================
+      ["む (Mu-row)", "六日", "むいか", "muika", "sixth day of the month; 6 days", "Noun", "六月六日 (rokugatsu muika)", "June 6th"],
+      ["む (Mu-row)", "向こう", "むこう", "mukou", "over there, opposite side", "Noun", "道の向こう (michi no mukou)", "across the street"],
+      ["む (Mu-row)", "難しい", "むずかしい", "muzukashii", "difficult, hard", "i-Adjective", "難しい問題 (muzukashii mondai)", "difficult problem"],
+      ["む (Mu-row)", "六つ", "むっつ", "muttsu", "six (things)", "Noun", "六つに分ける (muttsu ni wakeru)", "to divide into six"],
+      ["む (Mu-row)", "村", "むら", "mura", "village", "Noun", "小さな村 (chiisana mura)", "small village"],
+
+      // ===================== め (ME-ROW) =====================
+      ["め (Me-row)", "目", "め", "me", "eye", "Noun", "目が大きい (me ga ookii)", "having big eyes"],
+      ["め (Me-row)", "メートル", "メートル", "meetoru", "meter", "Noun", "百メートル (hyaku meetoru)", "100 meters"],
+      ["め (Me-row)", "眼鏡", "めがね", "megane", "eyeglasses", "Noun", "眼鏡をかける (megane o kakeru)", "to wear glasses"],
+
+      // ===================== も (MO-ROW) =====================
+      ["も (Mo-row)", "もう", "もう", "mou", "already; more / again", "Adverb", "もう食べました (mou tabemashita)", "I already ate"],
+      ["も (Mo-row)", "木曜日", "もくようび", "mokuyoubi", "Thursday", "Noun", "木曜日の夜 (mokuyoubi no yoru)", "Thursday night"],
+      ["も (Mo-row)", "持つ", "もつ", "motsu", "to hold, to carry; to possess", "Verb", "荷物を持つ (nimotsu o motsu)", "to carry luggage"],
+      ["も (Mo-row)", "もっと", "もっと", "motto", "more", "Adverb", "もっとゆっくり話してください (motto yukkuri hanashite kudasai)", "please speak more slowly"],
+      ["も (Mo-row)", "物", "もの", "mono", "thing, object", "Noun", "甘い物 (amai mono)", "sweet things"],
+      ["も (Mo-row)", "門", "もん", "mon", "gate", "Noun", "学校の門 (gakkou no mon)", "school gate"],
+      ["も (Mo-row)", "問題", "もんだい", "mondai", "problem, question", "Noun", "問題に答える (mondai ni kotaeru)", "to answer a question"],
+
+      // ===================== や (YA-ROW) =====================
+      ["や (Ya-row)", "八百屋", "やおや", "yaoya", "greengrocer, vegetable shop", "Noun", "八百屋で野菜を買う (yaoya de yasai o kau)", "to buy vegetables at the greengrocer"],
+      ["や (Ya-row)", "野菜", "やさい", "yasai", "vegetable", "Noun", "新鮮な野菜 (shinsen na yasai)", "fresh vegetables"],
+      ["や (Ya-row)", "易しい", "やさしい", "yasashii", "easy, simple; kind/gentle (優しい)", "i-Adjective", "易しい日本語 (yasashii nihongo)", "easy Japanese"],
+      ["や (Ya-row)", "安い", "やすい", "yasui", "cheap, inexpensive", "i-Adjective", "安い店 (yasui mise)", "inexpensive shop"],
+      ["や (Ya-row)", "休み", "やすみ", "yasumi", "holiday, day off, rest, break", "Noun", "明日は休みです (ashita wa yasumi desu)", "tomorrow is a day off"],
+      ["や (Ya-row)", "休む", "やすむ", "yasumu", "to rest, to take a day off", "Verb", "学校を休む (gakkou o yasumu)", "to be absent from school"],
+      ["や (Ya-row)", "八つ", "やっつ", "yattsu", "eight (things)", "Noun", "八つあります (yattsu arimasu)", "there are eight"],
+      ["や (Ya-row)", "山", "やま", "yama", "mountain", "Noun", "高い山 (takai yama)", "high mountain"],
+      ["や (Ya-row)", "やる", "やる", "yaru", "to do; to give (to pets/plants/younger)", "Verb", "花に水をやる (hana ni mizu o yaru)", "to water the flowers"],
+
+      // ===================== ゆ (YU-ROW) =====================
+      ["ゆ (Yu-row)", "夕方", "ゆうがた", "yuugata", "evening, dusk", "Noun", "夕方のニュース (yuugata no nyuusu)", "evening news"],
+      ["ゆ (Yu-row)", "夕飯", "ゆうはん", "yuuhan", "evening meal, dinner", "Noun", "夕飯を作る (yuuhan o tsukuru)", "to make dinner"],
+      ["ゆ (Yu-row)", "郵便局", "ゆうびんきょく", "yuubinkyoku", "post office", "Noun", "郵便局で切手を買う (yuubinkyoku de kitte o kau)", "to buy stamps at the post office"],
+      ["ゆ (Yu-row)", "昨夜", "ゆうべ", "yuube", "last night", "Noun", "昨夜はよく寝ました (yuube wa yoku nemashita)", "I slept well last night"],
+      ["ゆ (Yu-row)", "有名", "ゆうめい", "yuumei", "famous", "na-Adjective", "有名な建物 (yuumei na tatemono)", "famous building"],
+      ["ゆ (Yu-row)", "雪", "ゆき", "yuki", "snow", "Noun", "雪が降る (yuki ga furu)", "it snows"],
+      ["ゆ (Yu-row)", "ゆっくり", "ゆっくり", "yukkuri", "slowly, at ease", "Adverb", "ゆっくり歩く (yukkuri aruku)", "to walk slowly"],
+
+      // ===================== よ (YO-ROW) =====================
+      ["よ (Yo-row)", "八日", "ようか", "youka", "eighth day of the month; 8 days", "Noun", "八月八日 (hachigatsu youka)", "August 8th"],
+      ["よ (Yo-row)", "洋服", "ようふく", "youfuku", "Western-style clothes", "Noun", "洋服を着る (youfuku o kiru)", "to wear Western-style clothes"],
+      ["よ (Yo-row)", "よく", "よく", "yoku", "often, well", "Adverb", "よくできました (yoku dekimashita)", "well done!"],
+      ["よ (Yo-row)", "横", "よこ", "yoko", "beside, side; width", "Noun", "机の横 (tsukue no yoko)", "beside the desk"],
+      ["よ (Yo-row)", "四日", "よっか", "yokka", "fourth day of the month; 4 days", "Noun", "四月四日 (shigatsu yokka)", "April 4th"],
+      ["よ (Yo-row)", "四つ", "よっつ", "yottsu", "four (things)", "Noun", "椅子が四つある (isu ga yottsu aru)", "there are four chairs"],
+      ["よ (Yo-row)", "呼ぶ", "よぶ", "yobu", "to call, to invite", "Verb", "友だちを呼ぶ (tomodachi o yobu)", "to invite a friend"],
+      ["よ (Yo-row)", "読む", "よむ", "yomu", "to read", "Verb", "本を読む (hon o yomu)", "to read a book"],
+      ["よ (Yo-row)", "夜", "よる", "yoru", "night, evening", "Noun", "夜遅く (yoru osoku)", "late at night"],
+      ["よ (Yo-row)", "弱い", "よわい", "yowai", "weak", "i-Adjective", "体が弱い (karada ga yowai)", "having a weak constitution"],
+
+      // ===================== ら (RA-ROW) =====================
+      ["ら (Ra-row)", "来月", "らいげつ", "raigetsu", "next month", "Noun", "来月日本へ行きます (raigetsu nihon e ikimasu)", "I'm going to Japan next month"],
+      ["ら (Ra-row)", "来週", "らいしゅう", "raishuu", "next week", "Noun", "来週の月曜日 (raishuu no getsuyoubi)", "next Monday"],
+      ["ら (Ra-row)", "来年", "らいねん", "rainen", "next year", "Noun", "来年の春 (rainen no haru)", "next spring"],
+      ["ら (Ra-row)", "ラジオ", "ラジオ", "rajio", "radio", "Noun", "ラジオを聞く (rajio o kiku)", "to listen to the radio"],
+      ["ら (Ra-row)", "ラジカセ", "ラジカセ", "rajikase", "radio cassette player", "Noun", "ラジカセで音楽を聞く (rajikase de ongaku o kiku)", "to listen to music on a radio cassette"],
+
+      // ===================== り (RI-ROW) =====================
+      ["り (Ri-row)", "りっぱ", "りっぱ", "rippa", "splendid, fine, impressive", "na-Adjective", "りっぱな建物 (rippa na tatemono)", "splendid building"],
+      ["り (Ri-row)", "留学生", "りゅうがくせい", "ryuugakusei", "international student", "Noun", "日本の留学生 (nihon no ryuugakusei)", "international student in Japan"],
+      ["り (Ri-row)", "両親", "りょうしん", "ryoushin", "parents (both)", "Noun", "両親に手紙を書く (ryoushin ni tegami o kaku)", "to write a letter to one's parents"],
+      ["り (Ri-row)", "料理", "りょうり", "ryouri", "cooking, cuisine, dish", "Noun", "料理を作る (ryouri o tsukuru)", "to cook food"],
+      ["り (Ri-row)", "旅行", "りょこう", "ryokou", "travel, trip", "Noun", "京都へ旅行に行く (kyouto e ryokou ni iku)", "to go on a trip to Kyoto"],
+
+      // ===================== る (RU-ROW) =====================
+      ["る (Ru-row)", "留守", "るす", "rusu", "absence, not at home", "Noun", "今、留守です (ima, rusu desu)", "currently not at home"],
+
+      // ===================== れ (RE-ROW) =====================
+      ["れ (Re-row)", "零", "れい", "rei", "zero", "Noun", "零度 (reido)", "zero degrees"],
+      ["れ (Re-row)", "冷蔵庫", "れいぞうこ", "reizouko", "refrigerator", "Noun", "冷蔵庫に入れる (reizouko ni ireru)", "to put in the fridge"],
+      ["れ (Re-row)", "レコード", "レコード", "rekoodo", "record (vinyl)", "Noun", "古いレコード (furui rekoodo)", "old record"],
+      ["れ (Re-row)", "レストラン", "レストラン", "resutoran", "restaurant", "Noun", "レストランで食事する (resutoran de shokuji suru)", "to dine at a restaurant"],
+      ["れ (Re-row)", "練習", "れんしゅう", "renshuu", "practice", "Noun", "会話の練習 (kaiwa no renshuu)", "conversation practice"],
+
+      // ===================== ろ (RO-ROW) =====================
+      ["ろ (Ro-row)", "廊下", "ろうか", "rouka", "corridor, hallway", "Noun", "廊下を走らない (rouka o hashiranai)", "do not run in the hallway"],
+      ["ろ (Ro-row)", "六", "ろく", "roku", "six", "Noun", "六時 (rokuji)", "6 o'clock"],
+
+      // ===================== わ (WA-ROW) =====================
+      ["わ (Wa-row)", "ワイシャツ", "ワイシャツ", "waishatsu", "dress shirt, business shirt", "Noun", "白いワイシャツ (shiroi waishatsu)", "white dress shirt"],
+      ["わ (Wa-row)", "若い", "わかい", "wakai", "young", "i-Adjective", "若い先生 (wakai sensei)", "young teacher"],
+      ["わ (Wa-row)", "分かる", "わかる", "wakaru", "to understand, to know", "Verb", "意味が分かる (imi ga wakaru)", "to understand the meaning"],
+      ["わ (Wa-row)", "忘れる", "わすれる", "wasureru", "to forget", "Verb", "宿題を忘れる (shukudai o wasureru)", "to forget one's homework"],
+      ["わ (Wa-row)", "私", "わたし", "watashi", "I, me", "Pronoun", "私は学生です (watashi wa gakusei desu)", "I am a student"],
+      ["わ (Wa-row)", "わたくし", "わたくし", "watakushi", "I, me (very polite)", "Pronoun", "わたくしがご案内します (watakushi ga goannai shimasu)", "I will guide you"],
+      ["わ (Wa-row)", "渡す", "わたす", "watasu", "to hand over, to give", "Verb", "プレゼントを渡す (purezento o watasu)", "to hand over a present"],
+      ["わ (Wa-row)", "渡る", "わたる", "wataru", "to cross (a bridge/road)", "Verb", "道を渡る (michi o wataru)", "to cross the street"],
+      ["わ (Wa-row)", "悪い", "わるい", "warui", "bad, wrong", "i-Adjective", "天気が悪い (tenki ga warui)", "the weather is bad"],
+
+      // ===================== COUNTERS & SUFFIXES =====================
+      ["Counters & Suffixes", "〜歳", "〜さい", "-sai", "years old (age counter)", "Counter", "二十歳 / 二十五歳 (nijuu-go-sai)", "25 years old"],
+      ["Counters & Suffixes", "〜冊", "〜さつ", "-satsu", "counter for bound books", "Counter", "本を三冊買う (hon o sansatsu kau)", "to buy three books"],
+      ["Counters & Suffixes", "〜時", "〜じ", "-ji", "o'clock (hour counter)", "Counter", "今は三時です (ima wa sanji desu)", "it is 3 o'clock now"],
+      ["Counters & Suffixes", "〜時間", "〜じかん", "-jikan", "hours (duration counter)", "Counter", "二時間勉強する (nijikan benkyou suru)", "to study for two hours"],
+      ["Counters & Suffixes", "〜週間", "〜しゅうかん", "-shuukan", "weeks (duration counter)", "Counter", "一週間休む (isshuukan yasumu)", "to rest for one week"],
+      ["Counters & Suffixes", "〜人", "〜にん", "-nin", "counter for people", "Counter", "学生が五人いる (gakusei ga gonin iru)", "there are five students"],
+      ["Counters & Suffixes", "〜年", "〜ねん", "-nen", "year counter", "Counter", "二〇二六年 (nisennijuu-rokunen)", "the year 2026"],
+      ["Counters & Suffixes", "〜杯", "〜はい / ぱい / ばい", "-hai / -pai / -bai", "counter for cups/glasses full", "Counter", "コーヒーを二杯ください (koohii o nihai kudasai)", "two cups of coffee, please"],
+      ["Counters & Suffixes", "〜匹", "〜ひき / ぴき / びき", "-hiki / -piki / -biki", "counter for small animals", "Counter", "犬が二匹いる (inu ga nihiki iru)", "there are two dogs"],
+      ["Counters & Suffixes", "〜分", "〜ふん / ぷん", "-fun / -pun", "minute counter", "Counter", "十分待つ (juppun matsu)", "to wait 10 minutes"],
+      ["Counters & Suffixes", "〜階", "〜かい / がい", "-kai / -gai", "floor / story of a building", "Counter", "三階にあります (sangai ni arimasu)", "it is on the 3rd floor"],
+      ["Counters & Suffixes", "〜回", "〜かい", "-kai", "times (frequency counter)", "Counter", "週に二回 (shuu ni nikai)", "twice a week"],
+      ["Counters & Suffixes", "〜か月", "〜かげつ", "-kagetsu", "months (duration counter)", "Counter", "三か月勉強する (sankagetsu benkyou suru)", "to study for 3 months"],
+      ["Counters & Suffixes", "〜個", "〜こ", "-ko", "counter for small round objects", "Counter", "りんごを三個買う (ringo o sanko kau)", "to buy three apples"],
+      ["Counters & Suffixes", "〜本", "〜ほん / ぽん / ぼん", "-hon / -pon / -bon", "counter for long cylindrical objects", "Counter", "ペンが二本ある (pen ga nihon aru)", "there are two pens"],
+      ["Counters & Suffixes", "〜枚", "〜まい", "-mai", "counter for flat, thin objects", "Counter", "紙を五枚ください (kami o gomai kudasai)", "five sheets of paper, please"],
+      ["Counters & Suffixes", "〜台", "〜だい", "-dai", "counter for machines & vehicles", "Counter", "車が二台ある (kuruma ga nidai aru)", "there are two cars"],
+      ["Counters & Suffixes", "〜番", "〜ばん", "-ban", "number (in a series)", "Counter", "一番のバス (ichiban no basu)", "bus number 1"],
+      ["Counters & Suffixes", "〜目", "〜め", "-me", "ordinal suffix (-st, -nd, -rd)", "Counter", "二つ目の角 (futatsume no kado)", "the second corner"],
+
+      // ===================== GREETINGS & EXPRESSIONS (End of Video) =====================
+      ["Greetings & Expressions", "ありがとうございます", "ありがとうございます", "arigatou gozaimasu", "thank you very much (polite)", "Expression", "いつもありがとうございます", "thank you as always"],
+      ["Greetings & Expressions", "いただきます", "いただきます", "itadakimasu", "expression of gratitude before meals", "Expression", "それでは、いただきます", "well then, let's eat!"],
+      ["Greetings & Expressions", "いってきます", "いってきます", "ittekimasu", "I'm leaving / I'll go and come back", "Expression", "学校へいってきます", "I'm off to school"],
+      ["Greetings & Expressions", "いってらっしゃい", "いってらっしゃい", "itterasshai", "have a good day / take care leaving", "Expression", "気をつけて、いってらっしゃい", "be careful and have a safe trip"],
+      ["Greetings & Expressions", "いらっしゃい / いらっしゃいませ", "いらっしゃいませ", "irasshaimase", "welcome (at shops/restaurants)", "Expression", "いらっしゃいませ、何名様ですか", "welcome, how many in your party?"],
+      ["Greetings & Expressions", "お元気で", "おげんきで", "ogenki de", "take care, stay well", "Expression", "どうぞお元気で (douzo ogenki de)", "please take good care of yourself"],
+      ["Greetings & Expressions", "お願いします", "おねがいします", "onegaishimasu", "please (when requesting)", "Expression", "これをお願いします (kore o onegaishimasu)", "this one, please"],
+      ["Greetings & Expressions", "おはようございます", "おはようございます", "ohayou gozaimasu", "good morning (polite)", "Expression", "先生、おはようございます", "good morning, teacher"],
+      ["Greetings & Expressions", "おやすみなさい", "おやすみなさい", "oyasuminasai", "good night", "Expression", "また明日、おやすみなさい", "see you tomorrow, good night"],
+      ["Greetings & Expressions", "ごちそうさまでした", "ごちそうさまでした", "gochisousama deshita", "thank you for the meal (after eating)", "Expression", "おいしかったです。ごちそうさまでした。", "it was delicious. Thank you for the meal."],
+      ["Greetings & Expressions", "ごめんなさい", "ごめんなさい", "gomennasai", "I am sorry", "Expression", "遅れてごめんなさい (okurete gomennasai)", "sorry for being late"],
+      ["Greetings & Expressions", "こんにちは", "こんにちは", "konnichiwa", "hello, good afternoon", "Expression", "皆さん、こんにちは", "hello, everyone"],
+      ["Greetings & Expressions", "こんばんは", "こんばんは", "konbanwa", "good evening", "Expression", "こんばんは、いい夜ですね", "good evening, nice night isn't it"],
+      ["Greetings & Expressions", "さようなら", "さようなら", "sayounara", "goodbye, farewell", "Expression", "先生、さようなら", "goodbye, teacher"],
+      ["Greetings & Expressions", "失礼します", "しつれいします", "shitsurei shimasu", "excuse me (entering/leaving/hanging up)", "Expression", "お先に失礼します (osaki ni shitsurei shimasu)", "pardon me for leaving first"],
+      ["Greetings & Expressions", "すみません", "すみません", "sumimasen", "excuse me; I'm sorry; thank you", "Expression", "すみません、駅はどこですか", "excuse me, where is the station?"],
+      ["Greetings & Expressions", "ただいま", "ただいま", "tadaima", "I'm home / I'm back", "Expression", "ただいま帰りました", "I've just returned home"],
+      ["Greetings & Expressions", "お帰りなさい", "おかえりなさい", "okaerinasai", "welcome home / welcome back", "Expression", "お帰りなさい、お疲れ様", "welcome home, good job today"],
+      ["Greetings & Expressions", "はじめまして", "はじめまして", "hajimemashite", "nice to meet you (for the first time)", "Expression", "はじめまして、田中です", "nice to meet you, I'm Tanaka"],
+      ["Greetings & Expressions", "よろしくお願いします", "よろしくおねがいします", "yoroshiku onegaishimasu", "pleased to meet you / I count on your favor", "Expression", "どうぞよろしくお願いします", "very pleased to meet you"],
+      ["Greetings & Expressions", "では、また", "では、また", "dewa, mata", "well then, see you again!", "Expression", "では、また会いましょう", "well then, let's meet again!"]
+    ];
+
+    // Transform raw arrays into structured objects with IDs
+    let allVocab = RAW_VOCAB_DATA.map((item, idx) => ({
+      id: idx + 1,
+      section: item[0],
+      kanji: item[1],
+      kana: item[2],
+      romaji: item[3],
+      meaning: item[4],
+      pos: item[5],
+      exampleJp: item[6],
+      exampleEn: item[7]
+    }));
+
+    // Load any custom user words from localStorage
+    try {
+      const savedCustom = JSON.parse(localStorage.getItem('n5_custom_words') || '[]');
+      if (Array.isArray(savedCustom) && savedCustom.length > 0) {
+        allVocab = allVocab.concat(savedCustom);
+      }
+    } catch (e) {}
+
+    // Load starred / mastered IDs
+    let masteredIds = new Set();
+    try {
+      const savedMastered = JSON.parse(localStorage.getItem('n5_mastered_ids') || '[]');
+      masteredIds = new Set(savedMastered);
+    } catch (e) {}
+
+    // Application State
+    let filteredVocab = [...allVocab];
+    let currentIndex = 0;
+    let isAutoPlaying = false;
+    let autoPlayTimer = null;
+    let currentRunToken = 0; // Cancels pending speech chains when user navigates
+    let showKana = true;
+    let showRomaji = true;
+    let showEnglish = true;
+    let filterStarredOnly = false;
+
+    // DOM Elements
+    const categorySelect = document.getElementById('categorySelect');
+    const currentIndexDisplay = document.getElementById('currentIndexDisplay');
+    const totalWordsDisplay = document.getElementById('totalWordsDisplay');
+    const timelineBar = document.getElementById('timelineBar');
+    const timelineFill = document.getElementById('timelineFill');
+    const watermarkKana = document.getElementById('watermarkKana');
+    const cardSectionBadge = document.getElementById('cardSectionBadge');
+    const cardPosBadge = document.getElementById('cardPosBadge');
+    const cardNumberTag = document.getElementById('cardNumberTag');
+    const cardKana = document.getElementById('cardKana');
+    const cardRomaji = document.getElementById('cardRomaji');
+    const cardKanji = document.getElementById('cardKanji');
+    const cardMeaning = document.getElementById('cardMeaning');
+    const cardExampleJp = document.getElementById('cardExampleJp');
+    const cardExampleEn = document.getElementById('cardExampleEn');
+    const starIcon = document.getElementById('starIcon');
+    const audioStatusBadge = document.getElementById('audioStatusBadge');
+    const audioStatusText = document.getElementById('audioStatusText');
+
+    // Populate Category Dropdown
+    function populateCategories() {
+      const sections = [...new Set(allVocab.map(w => w.section))];
+      categorySelect.innerHTML = `<option value="ALL">All Sections (${allVocab.length} Words)</option>`;
+      sections.forEach(sec => {
+        const count = allVocab.filter(w => w.section === sec).length;
+        const opt = document.createElement('option');
+        opt.value = sec;
+        opt.textContent = `${sec} (${count})`;
+        categorySelect.appendChild(opt);
+      });
+    }
+
+    // Render Current Word Slide
+    function renderCurrentSlide() {
+      if (filteredVocab.length === 0) {
+        cardKanji.textContent = "該当なし";
+        cardKana.textContent = "がいとうなし";
+        cardRomaji.textContent = "gaitou nashi";
+        cardMeaning.textContent = "No matching words found";
+        cardExampleJp.textContent = "Try clearing your search or filter.";
+        cardExampleEn.textContent = "";
+        currentIndexDisplay.textContent = "0";
+        totalWordsDisplay.textContent = "0";
+        timelineFill.style.width = '0%';
+        return;
+      }
+
+      if (currentIndex >= filteredVocab.length) currentIndex = 0;
+      if (currentIndex < 0) currentIndex = filteredVocab.length - 1;
+
+      const word = filteredVocab[currentIndex];
+      currentIndexDisplay.textContent = currentIndex + 1;
+      totalWordsDisplay.textContent = filteredVocab.length;
+
+      const pct = ((currentIndex + 1) / filteredVocab.length) * 100;
+      timelineFill.style.width = `${pct}%`;
+
+      cardSectionBadge.textContent = word.section;
+      cardPosBadge.textContent = word.pos;
+      cardNumberTag.textContent = `#${String(word.id).padStart(3, '0')}`;
+
+      cardKana.textContent = word.kana;
+      cardRomaji.textContent = word.romaji;
+      cardKanji.textContent = word.kanji;
+      cardMeaning.textContent = word.meaning;
+      cardExampleJp.textContent = word.exampleJp || `${word.kanji} (${word.romaji})`;
+      cardExampleEn.textContent = word.exampleEn || word.meaning;
+
+      // Watermark first character of section or kana
+      watermarkKana.textContent = word.kana.charAt(0);
+
+      // Visibility Toggles
+      cardKana.style.opacity = showKana ? '1' : '0';
+      cardRomaji.style.opacity = showRomaji ? '1' : '0';
+      document.getElementById('meaningContainer').style.opacity = showEnglish ? '1' : '0';
+
+      // Starred / Mastered state
+      const isStarred = masteredIds.has(word.id);
+      if (isStarred) {
+        starIcon.classList.remove('text-slate-400');
+        starIcon.classList.add('text-amber-400');
+        starIcon.setAttribute('fill', 'currentColor');
+      } else {
+        starIcon.classList.remove('text-amber-400');
+        starIcon.classList.add('text-slate-400');
+        starIcon.setAttribute('fill', 'none');
+      }
+
+      updateStarredCountBadge();
+    }
+
+    // Web Speech API Helper with Promise Resolution
+    function speakUtterance(text, lang, rate = 1.0) {
+      return new Promise((resolve) => {
+        if (!('speechSynthesis' in window)) {
+          setTimeout(resolve, 600);
+          return;
+        }
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = lang;
+        utter.rate = rate;
+
+        // Try selecting a high-quality native voice
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.lang.startsWith(lang.slice(0, 2)));
+        if (preferredVoice) utter.voice = preferredVoice;
+
+        let settled = false;
+        const finish = () => {
+          if (!settled) {
+            settled = true;
+            resolve();
+          }
+        };
+
+        utter.onend = finish;
+        utter.onerror = finish;
+        // Safety fallback timeout in case browser speech engine hangs
+        setTimeout(finish, 4500);
+        window.speechSynthesis.speak(utter);
+      });
+    }
+
+    function delay(ms) {
+      return new Promise(r => setTimeout(r, ms));
+    }
+
+    function setSpeakingUI(active, label = "Speaking...") {
+      if (active) {
+        audioStatusBadge.classList.remove('hidden');
+        audioStatusBadge.classList.add('inline-flex');
+        audioStatusText.textContent = label;
+      } else {
+        audioStatusBadge.classList.add('hidden');
+        audioStatusBadge.classList.remove('inline-flex');
+      }
+    }
+
+    // Speak Current Japanese Word Now
+    async function speakCurrentJapanese() {
+      if (filteredVocab.length === 0) return;
+      const token = ++currentRunToken;
+      const word = filteredVocab[currentIndex];
+      const speed = parseFloat(document.getElementById('speedSelect').value) || 1.0;
+
+      setSpeakingUI(true, "Speaking JP...");
+      await speakUtterance(word.kana || word.kanji, 'ja-JP', speed);
+      if (token === currentRunToken) {
+        setSpeakingUI(false);
+      }
+    }
+
+    // Speak Example Phrase
+    async function speakExamplePhrase() {
+      if (filteredVocab.length === 0) return;
+      const token = ++currentRunToken;
+      const word = filteredVocab[currentIndex];
+      const jpOnly = (word.exampleJp || word.kanji).split('(')[0].trim();
+      const speed = parseFloat(document.getElementById('speedSelect').value) || 1.0;
+
+      setSpeakingUI(true, "Example JP...");
+      await speakUtterance(jpOnly, 'ja-JP', speed);
+      if (token === currentRunToken) {
+        setSpeakingUI(false);
+      }
+    }
+
+    // Video-Style Auto-Play Presentation Loop:
+    // 1. Optional English meaning -> 2. Pause -> 3. Japanese 1st time -> 4. Pause -> 5. Japanese 2nd time -> Advance!
+    async function runAutoPlayStep() {
+      if (!isAutoPlaying || filteredVocab.length === 0) return;
+      const token = ++currentRunToken;
+      const word = filteredVocab[currentIndex];
+      const speed = parseFloat(document.getElementById('speedSelect').value) || 1.0;
+      const includeEnglish = document.getElementById('speakEnglishToggle').checked;
+
+      if (includeEnglish) {
+        setSpeakingUI(true, "EN Meaning");
+        const cleanMeaning = word.meaning.split(';')[0].replace(/\(.*?\)/g, '').trim();
+        await speakUtterance(cleanMeaning, 'en-US', speed);
+        if (token !== currentRunToken || !isAutoPlaying) return;
+        await delay(400 / speed);
+      }
+
+      if (token !== currentRunToken || !isAutoPlaying) return;
+      setSpeakingUI(true, "JP (1/2)");
+      await speakUtterance(word.kana || word.kanji, 'ja-JP', speed);
+
+      if (token !== currentRunToken || !isAutoPlaying) return;
+      await delay(550 / speed);
+
+      if (token !== currentRunToken || !isAutoPlaying) return;
+      setSpeakingUI(true, "JP (2/2)");
+      await speakUtterance(word.kana || word.kanji, 'ja-JP', speed);
+
+      if (token !== currentRunToken || !isAutoPlaying) return;
+      setSpeakingUI(false);
+      await delay(900 / speed);
+
+      if (token !== currentRunToken || !isAutoPlaying) return;
+      currentIndex = (currentIndex + 1) % filteredVocab.length;
+      renderCurrentSlide();
+      runAutoPlayStep();
+    }
+
+    function toggleAutoPlay() {
+      isAutoPlaying = !isAutoPlaying;
+      const playIcon = document.getElementById('playIcon');
+      const pauseIcon = document.getElementById('pauseIcon');
+      const autoPlayText = document.getElementById('autoPlayText');
+      const autoPlayBtn = document.getElementById('autoPlayBtn');
+
+      if (isAutoPlaying) {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+        autoPlayText.textContent = "Pause Presentation";
+        autoPlayBtn.classList.replace('bg-vermilion-500', 'bg-emerald-600');
+        autoPlayBtn.classList.replace('hover:bg-vermilion-600', 'hover:bg-emerald-700');
+        runAutoPlayStep();
+      } else {
+        currentRunToken++;
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        setSpeakingUI(false);
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+        autoPlayText.textContent = "Auto-Play Video Mode";
+        autoPlayBtn.classList.replace('bg-emerald-600', 'bg-vermilion-500');
+        autoPlayBtn.classList.replace('hover:bg-emerald-700', 'hover:bg-vermilion-600');
+      }
+    }
+
+    function navigateSlide(delta) {
+      if (filteredVocab.length === 0) return;
+      currentRunToken++;
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      setSpeakingUI(false);
+
+      currentIndex = (currentIndex + delta + filteredVocab.length) % filteredVocab.length;
+      renderCurrentSlide();
+
+      if (isAutoPlaying) {
+        runAutoPlayStep();
+      }
+    }
+
+    // Apply Search & Section Filters
+    function applyFilters() {
+      const sec = categorySelect.value;
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const clearBtn = document.getElementById('clearSearchBtn');
+
+      if (query.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      filteredVocab = allVocab.filter(w => {
+        const matchSec = sec === 'ALL' || w.section === sec;
+        const matchStar = !filterStarredOnly || masteredIds.has(w.id);
+        const matchQuery = !query ||
+          w.kanji.toLowerCase().includes(query) ||
+          w.kana.toLowerCase().includes(query) ||
+          w.romaji.toLowerCase().includes(query) ||
+          w.meaning.toLowerCase().includes(query);
+        return matchSec && matchStar && matchQuery;
+      });
+
+      currentIndex = 0;
+      renderCurrentSlide();
+    }
+
+    // Toggle Mastered / Starred Status
+    function toggleMasterCurrentWord() {
+      if (filteredVocab.length === 0) return;
+      const word = filteredVocab[currentIndex];
+      if (masteredIds.has(word.id)) {
+        masteredIds.delete(word.id);
+      } else {
+        masteredIds.add(word.id);
+      }
+      try {
+        localStorage.setItem('n5_mastered_ids', JSON.stringify([...masteredIds]));
+      } catch (e) {}
+      renderCurrentSlide();
+      if (!document.getElementById('vocabDrawer').classList.contains('hidden')) {
+        renderDrawerGrid();
+      }
+    }
+
+    function updateStarredCountBadge() {
+      document.getElementById('starredCountBadge').textContent = masteredIds.size;
+    }
+
+    // Render Complete Vocabulary Grid inside Drawer
+    function renderDrawerGrid() {
+      const grid = document.getElementById('drawerGrid');
+      const query = document.getElementById('drawerSearchInput').value.trim().toLowerCase();
+      const list = allVocab.filter(w => {
+        const matchStar = !filterStarredOnly || masteredIds.has(w.id);
+        const matchQ = !query ||
+          w.kanji.toLowerCase().includes(query) ||
+          w.kana.toLowerCase().includes(query) ||
+          w.romaji.toLowerCase().includes(query) ||
+          w.meaning.toLowerCase().includes(query) ||
+          w.section.toLowerCase().includes(query);
+        return matchStar && matchQ;
+      });
+
+      document.getElementById('drawerCountBadge').textContent = `${list.length} words`;
+
+      grid.innerHTML = list.map(w => {
+        const isStarred = masteredIds.has(w.id);
+        return `
+          <div data-word-id="${w.id}" class="drawer-word-item group p-3 rounded-2xl bg-slate-50 hover:bg-vermilion-50/70 dark:bg-slate-800/70 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 cursor-pointer flex items-center justify-between gap-2 transition">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-mono font-bold text-slate-400">#${String(w.id).padStart(3, '0')}</span>
+                <span class="text-[11px] font-jp font-semibold px-2 py-0.2 rounded-full bg-white dark:bg-slate-900 text-slate-500 border border-slate-200 dark:border-slate-700">${w.section}</span>
+                ${isStarred ? '<span class="text-amber-400 text-xs">★</span>' : ''}
+              </div>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span class="font-jp font-black text-lg text-slate-900 dark:text-white group-hover:text-vermilion-600 dark:group-hover:text-amber-400">${w.kanji}</span>
+                <span class="font-jp text-xs font-bold text-vermilion-600 dark:text-amber-400">${w.kana}</span>
+                <span class="font-mono text-xs text-slate-400">${w.romaji}</span>
+              </div>
+              <p class="text-xs font-semibold text-slate-600 dark:text-slate-300 truncate mt-0.5">${w.meaning}</p>
+            </div>
+            <span class="text-xs font-bold text-slate-400 group-hover:text-vermilion-500 shrink-0">Jump →</span>
+          </div>
+        `;
+      }).join('');
+
+      // Attach click handlers to jump directly to clicked word
+      grid.querySelectorAll('.drawer-word-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const id = parseInt(el.getAttribute('data-word-id'), 10);
+          categorySelect.value = 'ALL';
+          document.getElementById('searchInput').value = '';
+          filterStarredOnly = false;
+          applyFilters();
+          const idx = filteredVocab.findIndex(item => item.id === id);
+          if (idx !== -1) {
+            currentIndex = idx;
+            renderCurrentSlide();
+            speakCurrentJapanese();
+          }
+          document.getElementById('vocabDrawer').classList.add('hidden');
+        });
+      });
+    }
+
+    // Event Listeners
+    document.getElementById('prevBtn').addEventListener('click', () => navigateSlide(-1));
+    document.getElementById('nextBtn').addEventListener('click', () => navigateSlide(1));
+    document.getElementById('sidePrevBtn').addEventListener('click', () => navigateSlide(-1));
+    document.getElementById('sideNextBtn').addEventListener('click', () => navigateSlide(1));
+    document.getElementById('speakNowBtn').addEventListener('click', speakCurrentJapanese);
+    document.getElementById('kanjiClickArea').addEventListener('click', speakCurrentJapanese);
+    document.getElementById('speakExampleBtn').addEventListener('click', speakExamplePhrase);
+    document.getElementById('autoPlayBtn').addEventListener('click', toggleAutoPlay);
+    document.getElementById('masterWordBtn').addEventListener('click', toggleMasterCurrentWord);
+
+    // Timeline bar click jump
+    timelineBar.addEventListener('click', (e) => {
+      if (filteredVocab.length === 0) return;
+      const rect = timelineBar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      currentIndex = Math.floor(ratio * filteredVocab.length);
+      renderCurrentSlide();
+    });
+
+    // Shuffle button
+    document.getElementById('shuffleBtn').addEventListener('click', () => {
+      for (let i = filteredVocab.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [filteredVocab[i], filteredVocab[j]] = [filteredVocab[j], filteredVocab[i]];
+      }
+      currentIndex = 0;
+      renderCurrentSlide();
+    });
+
+    // Category & Search
+    categorySelect.addEventListener('change', applyFilters);
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('clearSearchBtn').addEventListener('click', () => {
+      document.getElementById('searchInput').value = '';
+      applyFilters();
+    });
+
+    // Self-Testing Visibility Toggles
+    function updateTogglePillStyle(btn, active) {
+      if (active) {
+        btn.classList.add('bg-white', 'dark:bg-slate-700', 'shadow-sm', 'text-slate-800', 'dark:text-slate-100');
+        btn.classList.remove('text-slate-400');
+      } else {
+        btn.classList.remove('bg-white', 'dark:bg-slate-700', 'shadow-sm', 'text-slate-800', 'dark:text-slate-100');
+        btn.classList.add('text-slate-400');
+      }
+    }
+
+    document.getElementById('toggleKanaBtn').addEventListener('click', (e) => {
+      showKana = !showKana;
+      updateTogglePillStyle(e.currentTarget, showKana);
+      renderCurrentSlide();
+    });
+    document.getElementById('toggleRomajiBtn').addEventListener('click', (e) => {
+      showRomaji = !showRomaji;
+      updateTogglePillStyle(e.currentTarget, showRomaji);
+      renderCurrentSlide();
+    });
+    document.getElementById('toggleEnglishBtn').addEventListener('click', (e) => {
+      showEnglish = !showEnglish;
+      updateTogglePillStyle(e.currentTarget, showEnglish);
+      renderCurrentSlide();
+    });
+
+    // Theme Toggle
+    document.getElementById('themeToggleBtn').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+
+    // Fullscreen Presentation Toggle
+    document.getElementById('fullscreenBtn').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      const fsBtnText = document.getElementById('fsBtnText');
+      fsBtnText.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
+    });
+
+    // Drawer Controls
+    document.getElementById('openDrawerBtn').addEventListener('click', () => {
+      document.getElementById('vocabDrawer').classList.remove('hidden');
+      renderDrawerGrid();
+    });
+    document.getElementById('closeDrawerBtn').addEventListener('click', () => {
+      document.getElementById('vocabDrawer').classList.add('hidden');
+    });
+    document.getElementById('drawerBackdrop').addEventListener('click', () => {
+      document.getElementById('vocabDrawer').classList.add('hidden');
+    });
+    document.getElementById('drawerSearchInput').addEventListener('input', renderDrawerGrid);
+
+    document.getElementById('filterStarredBtn').addEventListener('click', (e) => {
+      filterStarredOnly = !filterStarredOnly;
+      e.currentTarget.classList.toggle('border-amber-400', filterStarredOnly);
+      e.currentTarget.classList.toggle('bg-amber-50', filterStarredOnly);
+      renderDrawerGrid();
+      applyFilters();
+    });
+
+    // Custom Word Addition
+    document.getElementById('toggleAddWordFormBtn').addEventListener('click', () => {
+      document.getElementById('addWordForm').classList.toggle('hidden');
+    });
+
+    document.getElementById('addWordForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const kanji = document.getElementById('customKanji').value.trim();
+      const kana = document.getElementById('customKana').value.trim();
+      const romaji = document.getElementById('customRomaji').value.trim();
+      const meaning = document.getElementById('customMeaning').value.trim();
+      if (!kanji || !kana || !meaning) return;
+
+      const newWord = {
+        id: allVocab.length + 1,
+        section: "Custom Words",
+        kanji,
+        kana,
+        romaji: romaji || kana,
+        meaning,
+        pos: "Custom",
+        exampleJp: `${kanji} (${romaji || kana})`,
+        exampleEn: meaning
+      };
+
+      allVocab.push(newWord);
+      try {
+        const savedCustom = JSON.parse(localStorage.getItem('n5_custom_words') || '[]');
+        savedCustom.push(newWord);
+        localStorage.setItem('n5_custom_words', JSON.stringify(savedCustom));
+      } catch (err) {}
+
+      e.target.reset();
+      document.getElementById('addWordForm').classList.add('hidden');
+      populateCategories();
+      applyFilters();
+      renderDrawerGrid();
+    });
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      // Ignore shortcuts when typing in an input or select
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        toggleAutoPlay();
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        navigateSlide(1);
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        navigateSlide(-1);
+      } else if (e.key.toLowerCase() === 'r') {
+        e.preventDefault();
+        speakCurrentJapanese();
+      } else if (e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        document.getElementById('fullscreenBtn').click();
+      } else if (e.key.toLowerCase() === 'h') {
+        e.preventDefault();
+        document.getElementById('toggleEnglishBtn').click();
+      } else if (e.key.toLowerCase() === 'm') {
+        e.preventDefault();
+        toggleMasterCurrentWord();
+      }
+    });
+
+    // Touch Swipe Support for Mobile / Tablet Fullscreen
+    let touchStartX = 0;
+    const presentationCard = document.getElementById('presentationCard');
+    presentationCard.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    presentationCard.addEventListener('touchend', (e) => {
+      const diff = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(diff) > 50) {
+        navigateSlide(diff < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+
+    // Initialize Voices & App on Load
+    window.onload = () => {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+      }
+      populateCategories();
+      renderCurrentSlide();
+    };
+  </script>
+</body>
+</html>
